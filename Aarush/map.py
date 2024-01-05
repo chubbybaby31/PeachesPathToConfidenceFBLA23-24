@@ -7,21 +7,23 @@ pygame.init()
 ms = Movement()
 
 
-
-
 #screen setup
 screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("")
 game_over = False
+global back
 back = False
-
-
-
+global inst
+inst = False
+global running 
+running = True
 
 #background
 background= pygame.image.load("bg.png")
+menuScreen = pygame.image.load("Aarush/menuScreen.png")
+menuScreen = pygame.transform.scale(menuScreen, (900,600))
 mapblock1 = pygame.Rect(0, 205, 115, 360)
 mapblock2 = pygame.Rect(0, 203, 690, 227)
 mapblock3 = pygame.Rect(178, 495, 622, 105)
@@ -58,7 +60,6 @@ level3.x = 43
 level3.y = 87
 
 
-
 #only walking on path
 def will_collide(rect, dx, dy):
     future_rect = rect.copy() 
@@ -82,28 +83,37 @@ def wrap_text(message, font, max_width):
     return lines
 
 def display_text_screen(screen, message, typewriter_speed=0.05):
-    while True:
-        font = pygame.font.SysFont(None, 50)
-        wrapped_text = wrap_text(message, font, screen_width - 60)  
-        screen.fill((225,225,225))
-        
-        y_offset = 0
-        for line in wrapped_text:
-            for i in range(1, len(line) + 1):
-                text = font.render(line[:i], True, (0, 0, 0))
-                text_rect = text.get_rect(center=(screen_width // 2, screen_height // 5 + y_offset))
-                screen.fill((225,225,225), (0, screen_height // 5 + y_offset - 20, screen_width, 40 + y_offset))  
-                screen.blit(text, text_rect)
-                pygame.display.flip()
-                time.sleep(typewriter_speed)
+    font = pygame.font.SysFont(None, 50)
+    wrapped_text = wrap_text(message, font, screen_width - 60)  
+    screen.fill((225,225,225))
+    
+    y_offset = 0
+    for line in wrapped_text:
+        for i in range(1, len(line) + 1):
+            text = font.render(line[:i], True, (0, 0, 0))
+            text_rect = text.get_rect(center=(screen_width // 2, screen_height // 5 + y_offset))
+            screen.fill((225,225,225), (0, screen_height // 5 + y_offset - 20, screen_width, 40 + y_offset))  
+            screen.blit(text, text_rect)
+            pygame.display.flip()
+            time.sleep(typewriter_speed)
 
-            y_offset += font.get_height() +5  
+        y_offset += font.get_height() +5  
 
-        time.sleep(2) 
-                    
-        ms.game()
 
-def charMove():
+def show_popup(screen, message):
+    font = pygame.font.SysFont(None, 40)
+    text = font.render(message, True, (0, 0, 0))
+    text_rect = text.get_rect(center=(screen_width/2, screen_height/2))
+    pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(20, 20))  
+    screen.blit(text, text_rect)
+    pygame.display.flip()
+
+def dist(X, Y):
+    distance = math.sqrt((characterRect.x - X)**2 + (characterRect.y - Y)**2)
+    return distance
+
+def levelSel():
+    
     print(characterRect.x, characterRect.y)
     keys = pygame.key.get_pressed()
     dx = dy = 0
@@ -121,58 +131,119 @@ def charMove():
     if not will_collide(characterRect, 0, dy):
         characterRect.y = max(0, min(screen_height - character_size, characterRect.y + dy))
 
+   
 
-def show_popup(screen, message):
-    font = pygame.font.SysFont(None, 40)
-    text = font.render(message, True, (0, 0, 0))
-    text_rect = text.get_rect(center=(screen_width/2, screen_height/2))
-    pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(20, 20))  
-    screen.blit(text, text_rect)
-    pygame.display.flip()
-
-
-def dist(X, Y):
-    distance = math.sqrt((characterRect.x - X)**2 + (characterRect.y - Y)**2)
-    return distance
-
-def levelSel():
     keys = pygame.key.get_pressed()
-    if characterRect.colliderect(level1) or dist(level1.x, level1.y)< 30:
+    if characterRect.colliderect(level1):
         show_popup(screen, "Click Enter to Play")
         if keys[pygame.K_RETURN]:
             display_text_screen(screen, "Level 1: Peaches must gain the confidence to make it out of the farm. Explore through the farm gaining confidence as you go and finding the chests containing 3 keys of confidence to unlock farm exit.")
-
+            time.sleep(1)        
+            ms.game()
     if characterRect.colliderect(level2):
         show_popup(screen, "Click Enter to Play")        
         if keys[pygame.K_RETURN]:
             display_text_screen(screen, "Level 2: Peaches is making her way to the mountains where the wolves live but encounters a forest. Make it through the forest and find all 3 chests containing keys to confidence to get to the base of the mountain.")
+            time.sleep(1)        
+            ms.game()
     if characterRect.colliderect(level3):
         show_popup(screen, "Click Enter to Play")
         if keys[pygame.K_RETURN]:
             display_text_screen(screen, "Level 3: Final stretch. The wolf's den is at the top of a 10,000 feet mountain. Peaches must make it to the top and recover all the stolen food. Navigate through the tough terrain of the mountain and find all three chests containing keys to where the food is hidden.")
+            time.sleep(1)        
+            ms.game()
+
 
 def map():
-        charMove()
-        levelSel()
-        screen.blit(background, (0,0))
-        screen.blit(level1_image, level1)
-        screen.blit(level2_image, level2)
-        screen.blit(level3_image, level3)
-        screen.blit(character, characterRect)
+    levelSel()    
+    screen.blit(background, (0,0))
+    screen.blit(level1_image, level1)
+    screen.blit(level2_image, level2)
+    screen.blit(level3_image, level3)
+    screen.blit(character, characterRect)
 
-def menu():
-    
+def instructions():
+    global inst
+    screen.fill((225,225,225))    
     keys = pygame.key.get_pressed()
-       
-   
-    screen.fill((225,225,225))
-    if keys[pygame.K_RETURN]:
-        back = True
+    if keys[pygame.K_LEFT]:
+        inst = False 
+    
+def winScreen():
+    font = pygame.font.Font('Aarush/ARCADE_N.TTF', 60)
+    screen.blit(menuScreen, (0,0)) 
+    title_text = font.render('LEVEL COMPLETE', True, (0,0,0))
+    textRect = title_text.get_rect()
+    textRect.center = (screen_width // 2, screen_height // 10)
 
+
+    
+def menu():
+    global back
+    global inst
+    
+    if not back and not inst:    
+        font = pygame.font.Font('Aarush/ARCADE_N.TTF', 30)
+        screen.blit(menuScreen, (0,0)) 
+        title_text = font.render('PEACHES PATH TO CONFIDENCE', True, (0,0,0))
+        textRect = title_text.get_rect()
+        textRect.center = (screen_width // 2, screen_height // 10)
+    
+                  
+
+        b1_text = font.render('START', True, (0,0,0))
+        b1Rect = b1_text.get_rect()
+        b1Rect.center = (screen_width // 2, screen_height // 3)
+
+        b2_text = font.render('INSTRUCTIONS', True, (0,0,0))
+        b2Rect = b2_text.get_rect()
+        b2Rect.center = (screen_width // 2, screen_height // 2)
+
+        b3_text = font.render('QUIT', True, (0,0,0))
+        b3Rect = b3_text.get_rect()
+        b3Rect.center = (screen_width // 2, screen_height // 1.5)
+        
+        
+
+        if b1Rect.collidepoint(pygame.mouse.get_pos())== True:
+            b1_text = font.render('START', True, (225,0,0))
+            
+        else:
+            b1_text = font.render('START', True, (0,0,0))
+
+        if b2Rect.collidepoint(pygame.mouse.get_pos())== True:
+            b2_text = font.render('INSTRUCTIONS', True, (225,0,0))
+        else:
+            b2_text = font.render('INSTRUCTIONS', True, (0,0,0))
+
+        if b3Rect.collidepoint(pygame.mouse.get_pos())== True:
+            b3_text = font.render('QUIT', True, (225,0,0))
+        else:
+            b3_text = font.render('QUIT', True, (0,0,0))
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN and b1Rect.collidepoint(pygame.mouse.get_pos())== True:
+                back = True
+            elif event.type == pygame.MOUSEBUTTONDOWN and b2Rect.collidepoint(pygame.mouse.get_pos())== True:
+                inst = True
+            elif event.type == pygame.MOUSEBUTTONDOWN and b3Rect.collidepoint(pygame.mouse.get_pos())== True:
+                pygame.quit()
+                sys.exit()
+    
+        screen.blit(title_text, textRect)
+        
+        pygame.draw.rect(screen, (225,225,225), b1Rect.inflate(20, 20))
+        screen.blit(b1_text, b1Rect)
+        pygame.draw.rect(screen, (225,225,225), b2Rect.inflate(20, 20))
+        screen.blit(b2_text, b2Rect)
+        pygame.draw.rect(screen, (225,225,225), b3Rect.inflate(20, 20))
+        screen.blit(b3_text, b3Rect)
+        pygame.display.flip()
     if back == True:
         map()
-
-    
+    if inst == True:
+        instructions()
+        
 while not game_over:
     keys = pygame.key.get_pressed()
 
@@ -183,13 +254,6 @@ while not game_over:
             sys.exit()
 
     menu()
-
-
-    
-  
-
-    
-
     pygame.display.flip()
     
 
