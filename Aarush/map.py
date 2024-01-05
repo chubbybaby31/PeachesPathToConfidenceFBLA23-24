@@ -8,12 +8,15 @@ ms = Movement()
 
 
 
+
 #screen setup
 screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("")
 game_over = False
+back = False
+
 
 
 
@@ -141,28 +144,51 @@ def levelSel():
 
     if characterRect.colliderect(level2):
         show_popup(screen, "Click Enter to Play")        
-
+        if keys[pygame.K_RETURN]:
+            display_text_screen(screen, "Level 2: Peaches is making her way to the mountains where the wolves live but encounters a forest. Make it through the forest and find all 3 chests containing keys to confidence to get to the base of the mountain.")
     if characterRect.colliderect(level3):
         show_popup(screen, "Click Enter to Play")
+        if keys[pygame.K_RETURN]:
+            display_text_screen(screen, "Level 3: Final stretch. The wolf's den is at the top of a 10,000 feet mountain. Peaches must make it to the top and recover all the stolen food. Navigate through the tough terrain of the mountain and find all three chests containing keys to where the food is hidden.")
 
+def map():
+        charMove()
+        levelSel()
+        screen.blit(background, (0,0))
+        screen.blit(level1_image, level1)
+        screen.blit(level2_image, level2)
+        screen.blit(level3_image, level3)
+        screen.blit(character, characterRect)
 
+def menu():
+    
+    keys = pygame.key.get_pressed()
+       
+   
+    screen.fill((225,225,225))
+    if keys[pygame.K_RETURN]:
+        back = True
 
+    if back == True:
+        map()
+
+    
 while not game_over:
+    keys = pygame.key.get_pressed()
+
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    charMove()
-    levelSel()
+
+    menu()
+
 
     
   
 
-    screen.blit(background, (0,0))
-    screen.blit(level1_image, level1)
-    screen.blit(level2_image, level2)
-    screen.blit(level3_image, level3)
-    screen.blit(character, characterRect)
+    
 
     pygame.display.flip()
     
