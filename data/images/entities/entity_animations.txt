@@ -1,0 +1,4 @@
+player/idle/ 1 loop 20 25
+player/run/ 3;6;6;6;3 loop 20 25
+enemy/idle/ 1 loop
+enemy/run/ 6;6;6;6;6;6 loop 28 20
