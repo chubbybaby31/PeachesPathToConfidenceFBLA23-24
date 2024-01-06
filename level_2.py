@@ -1,0 +1,329 @@
+import pygame, sys, math
+import data.engine as e
+from pygame.locals import *
+from button import Button
+import menu
+import world_map
+
+def load_map(path):
+    f = open(path + '.txt', 'r')
+    data = f.read()
+    f.close()
+    data = data.split('\n')
+    game_map = []
+    for row in data:
+        game_map.append(list(row))
+    return game_map
+
+def wrap_text(message, font, max_width):
+    words = message.split(' ')
+    lines = []
+    current_line = ''
+
+    for word in words:
+        test_line = current_line + word + " "
+        if font.size(test_line)[0] <= max_width:
+            current_line = test_line
+        else:
+            lines.append(current_line) 
+            current_line = word + " "  
+
+    lines.append(current_line)  
+    return lines
+
+def show_popup(screen, message, popup=False):
+    font = pygame.font.Font('data/ARCADE_N.TTF', 10)
+    lines = wrap_text(message, font, DISPLAY_SIZE[0] - 50)
+    for i, t in enumerate(lines):
+        text = font.render(t, True, (0, 0, 0))
+        if popup:
+            text_rect = text.get_rect(center=(DISPLAY_SIZE[0]/2, DISPLAY_SIZE[1] * 7 / 8))
+        else: text_rect = text.get_rect(center=(DISPLAY_SIZE[0]/2, 100 + 10 * i))
+        pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(2, 2))  
+        screen.blit(text, text_rect)
+
+def main():
+    pygame.init()
+    clock = pygame.time.Clock()
+    pygame.display.set_caption('FBLA 2023-24')
+
+    global WINDOW_SIZE
+    WINDOW_SIZE = (800, 600)
+
+    global DISPLAY_SIZE
+    DISPLAY_SIZE = (400, 300)
+
+    screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
+
+    display = pygame.Surface(DISPLAY_SIZE)
+
+    end_game_screen = pygame.Surface(WINDOW_SIZE)
+
+    e.load_animations('data/images/entities/')
+
+    game_map = load_map('map_2')
+
+    grass_image = pygame.image.load('data/images/grass.png')
+    dirt_image = pygame.image.load('data/images/dirt.png')
+    chest_image = pygame.image.load('data/images/chest.png')
+    door_image = pygame.image.load('data/images/door_closed.png')
+    forest_bg = pygame.image.load('data/images/forest.jpeg')
+    forest_bg = pygame.transform.scale(forest_bg, DISPLAY_SIZE)
+    TILE_SIZE = dirt_image.get_width()
+
+    GUI_font = pygame.font.Font('data/ARCADE_N.TTF', 10)
+    EG_font = pygame.font.Font('data/ARCADE_N.TTF', 25)
+
+    confidence_quips = {3: "Exercise Regularly: Physical activity can improve your mood and self-image. It's not just about fitness; it's about feeling more energetic and positive about yourself.", 
+                        4: "Dress for Success: Wearing clothes that make you feel good about yourself can surprisingly boost your confidence. It's about feeling comfortable and at your best.", 
+                        5: "Practice Good Posture: Standing tall and maintaining good posture can instantly make you feel more confident. It's a physical way of telling yourself that you are strong and capable."}
+
+    confidence_collected = {3: False, 4: False, 5: False}
+
+    c_pts = 0
+    max_c_pts = 3
+
+    moving_right = False
+    moving_left = False
+
+    player_y_momentum = 0
+    air_timer = 0
+
+    true_scroll = [0, 0]
+
+    player = e.entity(0, 400, 20, 25, 'player')
+
+    enemies = []
+    enemies.append([2, 0, e.entity(1800, 350, 28, 20, 'enemy')])
+    enemies.append([2, 0, e.entity(1400, 410, 28, 20, 'enemy')])
+    enemies.append([2, 0, e.entity(1600, 410, 28, 20, 'enemy')])
+    enemies.append([2, 0, e.entity(1800, 460, 28, 20, 'enemy')])
+    enemies.append([2, 0, e.entity(700, 490, 28, 20, 'enemy')])
+    enemies.append([2, 0, e.entity(500, 510, 28, 20, 'enemy')])
+    enemies.append([2, 0, e.entity(1250, 520, 28, 20, 'enemy')])
+    enemies.append([2, 0, e.entity(1500, 540, 28, 20, 'enemy')])
+
+    near_chest = False
+    current_chest_id = None
+
+    near_door = False
+
+    lives = 10
+    invincible = False
+    invincible_timer = 0
+    game_over = False
+    while True:
+        clicked = False
+        if player.y >= 600:
+            lives = 0
+        
+        if lives <= 0:
+            game_over = True
+
+        chest_popup_id = None
+
+        display.fill(Color("sky blue"))
+        display.blit(forest_bg, (0, 0))
+
+        true_scroll[0] += (player.x - true_scroll[0] - 152) / 20
+        true_scroll[1] += (player.y - true_scroll[1] - 106) / 20
+        scroll = true_scroll.copy()
+        scroll[0] = int(scroll[0])
+        scroll[1] = int(scroll[1])
+
+        tile_rects = []
+        chests = []
+        chest_ids = []
+        enemy_borders = []
+        for y, row in enumerate(game_map):
+            for x, tile in enumerate(row):
+                if tile == '*' or tile == 'd' or tile == 'g': 
+                    enemy_borders.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
+                    #print(x * TILE_SIZE , y * TILE_SIZE)
+                if tile == '1' or tile == 'd':
+                    display.blit(dirt_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
+                elif tile == '2' or tile == 'g':
+                    display.blit(grass_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
+                elif tile == '9':
+                    display.blit(door_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
+                    door_rect = pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE * 2)
+                elif tile == '*': pass
+                elif int(tile) > 2:
+                    display.blit(chest_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
+                    chests.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
+                    chest_ids.append(int(tile))
+                if tile == '1' or tile == '2' or tile == '9' or tile == 'd' or tile == 'g':
+                    tile_rects.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
+        #print('\n')
+
+        player_movement = [0, 0]
+        if moving_right:
+            player_movement[0] += 2
+        if moving_left:
+            player_movement[0] -= 2
+        player_movement[1] += player_y_momentum
+        player_y_momentum += 0.2
+        if player_y_momentum > 3: player_y_momentum = 3
+
+        if player_movement[0] > 0:
+            player.set_action('run')
+            player.set_flip(False)
+        elif player_movement[0] < 0:
+            player.set_action('run')
+            player.set_flip(True)
+        elif player_movement[0] == 0:
+            player.set_action('idle')
+
+        collision_types = player.move(player_movement, tile_rects)
+
+        if collision_types['bottom']: 
+            player_y_momentum = 0
+            air_timer = 0
+        else: air_timer += 1
+
+        if collision_types['top']:
+            player_y_momentum = 0
+
+        if air_timer > 10:
+            player.set_action('idle')
+
+        player.change_frame(1)
+        player.display(display, scroll)
+
+        for id, chest in zip(chest_ids, chests):
+            distance = math.sqrt((player.x - chest.x)**2 + (player.y - chest.y)**2)
+            if distance <= 30 and not near_chest and not confidence_collected[id]:
+                chest_popup_id = id
+        
+        unlocked = True
+        for id in chest_ids:
+            if not confidence_collected[id]:
+                unlocked = False
+                break
+
+        if unlocked: door_image = pygame.image.load('data/images/door_opened.png')
+
+        for enemy in enemies:
+            enemy[2].set_action('run')
+            enemy[1] += 0.2
+            enemy_movement = [enemy[0], enemy[1]]
+            if enemy[1] > 3: enemy[1] = 3
+            collision_types = enemy[2].move(enemy_movement, tile_rects)
+            if collision_types['right'] or collision_types['left']: enemy[0] *= -1
+            for border in enemy_borders:
+                if enemy[2].obj.rect.colliderect(border): 
+                    enemy[0] *= -1
+                    break
+            if enemy[0] < 0: enemy[2].set_flip(True)
+            else: enemy[2].set_flip(False)
+            if collision_types['bottom'] == True:
+                enemy[1] = 0
+
+            enemy[2].display(display, scroll)
+            enemy[2].change_frame(1)
+
+            if player.obj.rect.colliderect(enemy[2].obj.rect) and not invincible: 
+                lives -= 1
+                invincible = True
+
+        door_distance = math.sqrt((player.x - door_rect.x)**2 + (player.y - door_rect.y)**2)
+        if door_distance <= 30 and not near_door and not unlocked:
+            show_popup(display, "Unlock all " + str(max_c_pts) + " chests to open door", popup=True)
+        elif door_distance <= 30: 
+            show_popup(display, "Press ENTER to complete level", popup=True)
+
+        if chest_popup_id != None and not confidence_collected[chest_popup_id]:
+            show_popup(display, "Press E to open chest", popup=True)
+        elif current_chest_id != None:
+            show_popup(display, confidence_quips[current_chest_id])
+            show_popup(display, "Press ESC to exit", popup=True)
+
+        if invincible:
+            invincible_timer += dt
+        if invincible_timer >= 3000:
+            invincible_timer = 0
+            invincible = False
+
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN:
+                if event.key == K_RIGHT and current_chest_id == None :
+                    moving_right = True
+                if event.key == K_LEFT and current_chest_id == None:
+                    moving_left = True
+                if event.key == K_UP:
+                    if air_timer < 6:
+                        player_y_momentum = -5
+            if event.type == KEYUP:
+                if event.key == K_RIGHT:
+                    moving_right = False
+                if event.key == K_LEFT:
+                    moving_left = False
+                if event.key == K_e and chest_popup_id != None:
+                    confidence_collected[chest_popup_id] = True
+                    current_chest_id = chest_popup_id
+                    c_pts += 1
+                if event.key == K_ESCAPE:
+                    current_chest_id = None
+                if event.key == K_RETURN and unlocked:
+                    game_over = True
+            if event.type == MOUSEBUTTONUP:
+                clicked = True
+
+        screen.blit(pygame.transform.scale(display, WINDOW_SIZE), (0, 0))
+
+        c_pts_text = GUI_font.render("CONFIDENCE POINTS: " + str(c_pts) + "/" + str(max_c_pts), True, Color("white"))
+        c_pts_text_rect = c_pts_text.get_rect(center=(120, 12))
+        screen.blit(c_pts_text, c_pts_text_rect)
+
+        lives_text = GUI_font.render("LIVES: " + str(lives), True, Color("white"))
+        lives_text_rect = lives_text.get_rect(center=(51, 30))
+        screen.blit(lives_text, lives_text_rect)
+
+        if game_over:
+            end_game_screen.fill((0, 0, 0))
+            go_rect = pygame.Rect(WINDOW_SIZE[0] // 2 - 200, WINDOW_SIZE[1] // 2 - 150, 400, 300)
+            pygame.draw.rect(end_game_screen, Color("white"), go_rect)
+            if lives > 0:
+                level_complete_text = EG_font.render("LEVEL COMPLETE!", True, Color("blue"))
+                level_complete_text_rect = level_complete_text.get_rect(center=(WINDOW_SIZE[0] // 2, 180))
+                end_game_screen.blit(level_complete_text, level_complete_text_rect)
+
+                map_button = Button(EG_font, "MAP", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 250, 150, 50), Color("blue"), Color("light blue"))
+                map_button.draw_button(end_game_screen, pygame.mouse.get_pos())
+
+                if clicked and map_button.checkHover(pygame.mouse.get_pos()):
+                    world_map.main()
+                    pygame.quit()
+                    sys.exit()
+
+            else:
+                fail_text = EG_font.render("GAME OVER", True, Color("red"))
+                fail_text_rect = fail_text.get_rect(center=(WINDOW_SIZE[0] // 2, 180))
+                end_game_screen.blit(fail_text, fail_text_rect)
+
+                restart_button = Button(EG_font, "RESTART", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 100, 250, 200, 50), Color("blue"), Color("light blue"))
+                restart_button.draw_button(end_game_screen, pygame.mouse.get_pos())
+
+                if clicked and restart_button.checkHover(pygame.mouse.get_pos()):
+                    main()
+                    pygame.quit()
+                    sys.exit()
+
+            menu_button = Button(EG_font, "MENU", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 310, 150, 50), Color("blue"), Color("light blue"))
+            menu_button.draw_button(end_game_screen, pygame.mouse.get_pos())
+
+            if clicked and menu_button.checkHover(pygame.mouse.get_pos()):
+                    menu.main()
+                    pygame.quit()
+                    sys.exit()
+
+            screen.blit(end_game_screen, (0, 0))
+
+        pygame.display.update()
+        dt = clock.tick(60)
+
+if __name__ == "__main__":
+    main()
