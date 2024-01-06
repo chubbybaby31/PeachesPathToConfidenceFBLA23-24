@@ -115,7 +115,7 @@ def main():
 
     near_door = False
 
-    lives = 10
+    lives = 3
     invincible = False
     invincible_timer = 0
     game_over = False
@@ -309,15 +309,15 @@ def main():
         screen.blit(lives_text, lives_text_rect)
 
         if game_over:
-            end_game_screen.fill((0, 0, 0))
+            end_game_screen.fill((193, 225, 193))
             go_rect = pygame.Rect(WINDOW_SIZE[0] // 2 - 200, WINDOW_SIZE[1] // 2 - 150, 400, 300)
-            pygame.draw.rect(end_game_screen, Color("white"), go_rect)
+            pygame.draw.rect(end_game_screen, (193, 225, 193), go_rect)
             if lives > 0:
-                level_complete_text = EG_font.render("LEVEL COMPLETE!", True, Color("blue"))
+                level_complete_text = EG_font.render("LEVEL COMPLETE!", True, Color("black"))
                 level_complete_text_rect = level_complete_text.get_rect(center=(WINDOW_SIZE[0] // 2, 180))
                 end_game_screen.blit(level_complete_text, level_complete_text_rect)
 
-                map_button = Button(EG_font, "CONTINUE", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 100, 250, 200, 50), Color("blue"), Color("light blue"))
+                map_button = Button(EG_font, "CONTINUE", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 100, 250, 200, 50), Color("gray"), Color("light gray"))
                 map_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
                 if clicked and map_button.checkHover(pygame.mouse.get_pos()):
@@ -330,7 +330,7 @@ def main():
                 fail_text_rect = fail_text.get_rect(center=(WINDOW_SIZE[0] // 2, 180))
                 end_game_screen.blit(fail_text, fail_text_rect)
 
-                restart_button = Button(EG_font, "RESTART", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 100, 250, 200, 50), Color("blue"), Color("light blue"))
+                restart_button = Button(EG_font, "RESTART", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 100, 250, 200, 50), Color("gray"), Color("light gray"))
                 restart_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
                 if clicked and restart_button.checkHover(pygame.mouse.get_pos()):
@@ -338,7 +338,7 @@ def main():
                     pygame.quit()
                     sys.exit()
 
-            menu_button = Button(EG_font, "MENU", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 310, 150, 50), Color("blue"), Color("light blue"))
+            menu_button = Button(EG_font, "MENU", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 310, 150, 50), Color("gray"), Color("light gray"))
             menu_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
             if clicked and menu_button.checkHover(pygame.mouse.get_pos()):
