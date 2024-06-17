@@ -63,13 +63,13 @@ def main():
 
     game_map = load_map('map_2')
 
-    grass_image = pygame.image.load('data/images/grass.png')
-    dirt_image = pygame.image.load('data/images/dirt.png')
+    log_image = pygame.image.load('data/images/log.png')
+    wood_image = pygame.image.load('data/images/wood.png')
     chest_image = pygame.image.load('data/images/chest.png')
     door_image = pygame.image.load('data/images/door_closed.png')
     forest_bg = pygame.image.load('data/images/forest.jpeg')
     forest_bg = pygame.transform.scale(forest_bg, DISPLAY_SIZE)
-    TILE_SIZE = dirt_image.get_width()
+    TILE_SIZE = wood_image.get_width()
 
     GUI_font = pygame.font.Font('data/ARCADE_N.TTF', 10)
     EG_font = pygame.font.Font('data/ARCADE_N.TTF', 25)
@@ -141,9 +141,9 @@ def main():
                     enemy_borders.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
                     #print(x * TILE_SIZE , y * TILE_SIZE)
                 if tile == '1' or tile == 'd':
-                    display.blit(dirt_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
+                    display.blit(wood_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
                 elif tile == '2' or tile == 'g':
-                    display.blit(grass_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
+                    display.blit(log_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
                 elif tile == '9':
                     display.blit(door_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
                     door_rect = pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE * 2)

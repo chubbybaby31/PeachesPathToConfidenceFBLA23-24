@@ -62,8 +62,8 @@ def main():
 
     game_map = load_map('map_3')
 
-    grass_image = pygame.image.load('data/images/grass.png')
-    dirt_image = pygame.image.load('data/images/dirt.png')
+    grass_image = pygame.image.load('data/images/gravel.png')
+    dirt_image = pygame.image.load('data/images/stone.png')
     chest_image = pygame.image.load('data/images/chest.png')
     safe_image = pygame.image.load('data/images/safe.png')
     safe_image = pygame.transform.scale(safe_image, (32, 32))
