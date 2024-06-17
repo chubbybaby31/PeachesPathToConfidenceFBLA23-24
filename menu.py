@@ -56,13 +56,13 @@ def main():
             if event.type == MOUSEBUTTONUP:
                 clicked = True
         
-        start_button = Button(title_font, "START", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 100, 150, 50), Color("white"), Color("pink"))
+        start_button = Button(title_font, "START", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 320, 150, 50), Color("white"), Color("pink"))
         start_button.draw_button(screen, pygame.mouse.get_pos())
 
-        instruction_button = Button(title_font, "INSTRUCTIONS", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 175, 200, 350, 50), Color("white"), Color("pink"))
+        instruction_button = Button(title_font, "INSTRUCTIONS", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 175, 400, 350, 50), Color("white"), Color("pink"))
         instruction_button.draw_button(screen, pygame.mouse.get_pos())
 
-        quit_button = Button(title_font, "QUIT", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 300, 150, 50), Color("white"), Color("pink"))
+        quit_button = Button(title_font, "QUIT", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 480, 150, 50), Color("white"), Color("pink"))
         quit_button.draw_button(screen, pygame.mouse.get_pos())
 
         if clicked and start_button.checkHover(pygame.mouse.get_pos()):
