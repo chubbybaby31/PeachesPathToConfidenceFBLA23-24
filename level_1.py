@@ -5,7 +5,9 @@ from button import Button
 import menu
 import world_map
 from _thread import start_new_thread
+from mouse import Mouse
 
+mouse = Mouse()
 global musicCounter
 musicCounter = 0
 def load_map(path):
@@ -340,7 +342,8 @@ def main():
                     sys.exit()
 
             screen.blit(end_game_screen, (0, 0))
-            
+        
+        screen.blit(pygame.transform.rotate(mouse.frame, -90), (0, 0))
         pygame.display.update()
         dt = clock.tick(60)
 
