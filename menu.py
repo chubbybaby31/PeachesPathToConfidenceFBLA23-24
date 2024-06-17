@@ -3,6 +3,8 @@ from pygame.locals import *
 from button import Button
 import messages
 from _thread import start_new_thread
+import cv2
+import numpy as np
 
 
 def main():
@@ -16,18 +18,36 @@ def main():
     WINDOW_SIZE = (800, 600)
 
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
-    bg_img = pygame.image.load("data/images/menuScreen.png")
-    bg_img = pygame.transform.scale(bg_img, (900, 600))
+    cap = cv2.VideoCapture('data/images/grand opening.mp4')
+
+    bg_img = pygame.image.load("data/images/grand opening.png")
+   
+ 
 
     title_font = pygame.font.Font('data/ARCADE_N.TTF', 30)
 
+    video_playing = True
     while True:
         clicked = False
-        screen.blit(bg_img, (0, 0))
+        if video_playing:
+        # Read a frame from the video
+            ret, frame = cap.read()
+            if not ret:
+                video_playing = False
+            else:
+                # Convert the frame from BGR to RGB
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = cv2.flip(frame, 1)
+                # Convert the frame to a Pygame surface
+                frame_surface = pygame.surfarray.make_surface(np.rot90(frame))
 
-        title_text = title_font.render("PEACHE'S PATH TO CONFIDENCE", True, Color("white"))
-        title_rect = title_text.get_rect(center=(WINDOW_SIZE[0] // 2, 30))
-        screen.blit(title_text, title_rect)
+                # Display the frame on the Pygame window
+                screen.blit(frame_surface, (0, 0))
+        else:
+            # Display the background image
+            screen.blit(bg_img, (0, 0))
+
+        
 
         for event in pygame.event.get():
             if event.type == QUIT:

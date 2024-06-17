@@ -39,7 +39,7 @@ def show_popup(screen, message, popup=False):
         if popup:
             text_rect = text.get_rect(center=(DISPLAY_SIZE[0]/2, DISPLAY_SIZE[1] * 7 / 8))
         else: text_rect = text.get_rect(center=(DISPLAY_SIZE[0]/2, 100 + 10 * i))
-        pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(2, 2))  
+        pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(2, 2), border_radius=5)  
         screen.blit(text, text_rect)
 
 def main():

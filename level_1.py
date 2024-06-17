@@ -44,7 +44,7 @@ def show_popup(screen, message, popup=False):
         if popup:
             text_rect = text.get_rect(center=(DISPLAY_SIZE[0]/2, DISPLAY_SIZE[1] * 7 / 8))
         else: text_rect = text.get_rect(center=(DISPLAY_SIZE[0]/2, 100 + 10 * i))
-        pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(2, 2))  
+        pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(2, 2), border_radius=5)  
         screen.blit(text, text_rect)
 
 def main():
@@ -79,9 +79,9 @@ def main():
     GUI_font = pygame.font.Font('data/ARCADE_N.TTF', 10)
     EG_font = pygame.font.Font('data/ARCADE_N.TTF', 25)
 
-    confidence_quips = {3: "Set Small Goals: Start with achievable goals to build up your sense of accomplishment. Completing small tasks successfully can boost your confidence gradually.", 
-                        4: "Positive Self-Talk: Replace negative thoughts with positive affirmations. Remind yourself of your strengths and achievements, no matter how small they may seem.", 
-                        5: "Learn New Skills: Acquiring new skills or hobbies can enhance your self-esteem. It shows you are capable of growth and adaptability."}
+    confidence_quips = {3: " Set Small Goals: Start with achievable goals to build up your sense of accomplishment. Completing small tasks successfully can boost your confidence gradually.", 
+                        4: " Positive Self-Talk: Replace negative thoughts with positive affirmations. Remind yourself of your strengths and achievements, no matter how small they may seem.", 
+                        5: " Learn New Skills: Acquiring new skills or hobbies can enhance your self-esteem. It shows you are capable of growth and adaptability."}
 
     confidence_collected = {3: False, 4: False, 5: False}
 
@@ -241,15 +241,15 @@ def main():
 
         door_distance = math.sqrt((player.x - door_rect.x)**2 + (player.y - door_rect.y)**2)
         if door_distance <= 30 and not near_door and not unlocked:
-            show_popup(display, "Unlock all " + str(max_c_pts) + " chests to open door", popup=True)
+            show_popup(display, " Unlock all" + str(max_c_pts) + " chests to open door", popup=True)
         elif door_distance <= 30: 
-            show_popup(display, "Press ENTER to complete level", popup=True)
+            show_popup(display, " Press ENTER to complete level", popup=True)
 
         if chest_popup_id != None and not confidence_collected[chest_popup_id]:
-            show_popup(display, "Press E to open chest", popup=True)
+            show_popup(display, " Press E to open chest", popup=True)
         elif current_chest_id != None:
             show_popup(display, confidence_quips[current_chest_id])
-            show_popup(display, "Press ESC to exit", popup=True)
+            show_popup(display, " Press ESC to exit", popup=True)
 
         for event in pygame.event.get():
             if event.type == QUIT:

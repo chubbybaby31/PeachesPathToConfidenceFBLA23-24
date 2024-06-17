@@ -11,9 +11,9 @@ class Button:
     
     def draw_button(self, screen, mPos):
         if self.checkHover(mPos):
-            pygame.draw.rect(screen, self.button_hover_color, self.button_rect)
+            pygame.draw.rect(screen, self.button_hover_color, self.button_rect, border_radius=10)
         else:
-            pygame.draw.rect(screen, self.button_color, self.button_rect)
+            pygame.draw.rect(screen, self.button_color, self.button_rect, border_radius=10)
         screen.blit(self.text, self.text_rect)
 
     def checkHover(self, mPos):
