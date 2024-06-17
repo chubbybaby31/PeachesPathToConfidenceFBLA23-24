@@ -130,14 +130,17 @@ def main():
                     move_down = False
                 if event.key == K_RETURN:
                     if collision_levels[0]:
+                        play_effect('data/audio/enterlevel.wav')
                         messages.level_1_info()
                         pygame.quit()
                         sys.exit()
                     elif collision_levels[1]:
+                        play_effect('data/audio/enterlevel.wav')
                         messages.level_2_info()
                         pygame.quit()
                         sys.exit()
                     elif collision_levels[2]:
+                        play_effect('data/audio/enterlevel.wav')
                         messages.level_3_info()
                         pygame.quit()
                         sys.exit()
@@ -157,5 +160,9 @@ def main():
         pygame.display.flip()
         dt = clock.tick(60)
 
+def play_effect(filename):
+    pygame.mixer.Channel(3).play(pygame.mixer.Sound(filename))
+
 if __name__ == '__main__':
+    pygame.mixer.init()
     main()

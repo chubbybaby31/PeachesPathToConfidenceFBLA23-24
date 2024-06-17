@@ -57,11 +57,13 @@ def story_line():
         back_button.draw_button(screen, pygame.mouse.get_pos())
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             world_map.main()
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             menu.main()
             pygame.quit()
             sys.exit()
@@ -105,11 +107,13 @@ def level_1_info():
         back_button.draw_button(screen, pygame.mouse.get_pos())
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             level_1.main()
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             world_map.main()
             pygame.quit()
             sys.exit()
@@ -153,11 +157,13 @@ def level_2_info():
         back_button.draw_button(screen, pygame.mouse.get_pos())
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             level_2.main()
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             world_map.main()
             pygame.quit()
             sys.exit()
@@ -201,11 +207,13 @@ def level_3_info():
         back_button.draw_button(screen, pygame.mouse.get_pos())
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             level_3.main()
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             world_map.main()
             pygame.quit()
             sys.exit()
@@ -240,12 +248,14 @@ def instructions():
                 pygame.quit()
                 sys.exit()
             if event.type == MOUSEBUTTONUP:
+
                 clicked = True
 
         back_button = Button(font, "BACK", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 520, 150, 50), Color("white"), Color("gray"))
         back_button.draw_button(screen, pygame.mouse.get_pos())
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             menu.main()
             pygame.quit()
             sys.exit()
@@ -292,6 +302,7 @@ def final():
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             menu.main()
             pygame.quit()
             sys.exit()
@@ -299,5 +310,9 @@ def final():
         pygame.display.update()
         dt = clock.tick(60)
 
+def play_effect(filename):
+    pygame.mixer.Channel(2).play(pygame.mixer.Sound(filename))
+
 if __name__ == '__main__':
+    pygame.mixer.init()
     instructions()

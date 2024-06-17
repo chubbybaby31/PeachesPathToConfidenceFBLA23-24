@@ -2,11 +2,15 @@ import pygame, sys
 from pygame.locals import *
 from button import Button
 import messages
+from _thread import start_new_thread
+
 
 def main():
+
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
+    
 
     global WINDOW_SIZE
     WINDOW_SIZE = (800, 600)
@@ -42,14 +46,17 @@ def main():
         quit_button.draw_button(screen, pygame.mouse.get_pos())
 
         if clicked and start_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             messages.story_line()
             pygame.quit()
             sys.exit()
         elif clicked and instruction_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             messages.instructions()
             pygame.quit()
             sys.exit()
         elif clicked and quit_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
             pygame.quit()
             sys.exit()
             
@@ -57,5 +64,17 @@ def main():
         pygame.display.flip()
         dt = clock.tick(60)
 
+def play_bg_music(filename):
+    bg_music = pygame.mixer.Sound(filename)
+    bg_music.set_volume(0.2)
+    pygame.mixer.Channel(0).play(bg_music, -1) 
+
+
+def play_effect(filename):
+    pygame.mixer.Channel(1).play(pygame.mixer.Sound(filename))
+
 if __name__ == '__main__':
+    pygame.mixer.init()
+    start_new_thread(play_bg_music, ('data/audio/bg_music.wav',))
     main()
+    

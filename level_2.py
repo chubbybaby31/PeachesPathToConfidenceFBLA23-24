@@ -108,7 +108,7 @@ def main():
 
     near_door = False
 
-    lives = 3
+    lives = 20
     invincible = False
     invincible_timer = 0
     game_over = False
@@ -325,5 +325,9 @@ def main():
         pygame.display.update()
         dt = clock.tick(60)
 
+def play_effect(filename):
+    pygame.mixer.Channel(5).play(pygame.mixer.Sound(filename))
+
 if __name__ == "__main__":
+    pygame.mixer.init()
     main()
