@@ -346,8 +346,7 @@ def main():
 
             screen.blit(end_game_screen, (0, 0))
         
-        hand.get_frame()
-        screen.blit(pygame.transform.rotate(hand.frame, -90), (0, 400))
+        screen.blit(pygame.transform.rotate(hand.frame, -90), (0, 500))
         pygame.display.update()
         dt = clock.tick(60)
 
