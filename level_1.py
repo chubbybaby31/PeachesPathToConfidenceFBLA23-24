@@ -345,8 +345,23 @@ def main():
                     sys.exit()
 
             screen.blit(end_game_screen, (0, 0))
-        
-        screen.blit(pygame.transform.rotate(hand.frame, -90), (0, 500))
+        try:
+            screen.blit(pygame.transform.rotate(hand.frame, -90), (0, 500))
+            hand_movement = hand.movement
+            if hand_movement[0] == 1:
+                moving_right = True
+                moving_left = False
+            elif hand_movement[0] == -1:
+                moving_left = True
+                moving_right = False
+            else:
+                moving_right = False
+                moving_left = False
+            if hand_movement[1] == 1:
+                if air_timer < 6:
+                        player_y_momentum = -5
+                
+        except TypeError: pass
         pygame.display.update()
         dt = clock.tick(60)
 
