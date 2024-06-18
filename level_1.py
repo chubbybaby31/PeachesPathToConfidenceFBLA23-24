@@ -5,11 +5,14 @@ from button import Button
 import menu
 import world_map
 from _thread import start_new_thread
+from mouse import Mouse
 
 
 
 global musicCounter
 musicCounter = 0
+hand = Mouse()
+
 def load_map(path):
     f = open(path + '.txt', 'r')
     data = f.read()
@@ -343,8 +346,8 @@ def main():
 
             screen.blit(end_game_screen, (0, 0))
         
-        
-        #screen.blit(pygame.transform.rotate(mouse.frame, -90), (0, 0))
+        hand.get_frame()
+        screen.blit(pygame.transform.rotate(hand.frame, -90), (0, 400))
         pygame.display.update()
         dt = clock.tick(60)
 
