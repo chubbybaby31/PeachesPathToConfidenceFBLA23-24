@@ -167,19 +167,32 @@ def level_2_info():
 
     global WINDOW_SIZE
     WINDOW_SIZE = (800, 600)
+    cap = cv2.VideoCapture('data/images/level2.mp4')
 
+    bg_img = pygame.image.load("data/images/level2.png")
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
 
-    message = '''Level 2: Peaches is making her way to the mountains where the wolves live but encounters a forest. Make it through the forest and find all 3 chests containing keys to confidence to get to the base of the mountain.'''
-    
+   # message = '''Peaches the pig was leading a contented life on the serene Harmony Farm alongside her fellow animals. One fateful night, a pack of cunning wolves invaded the farm and snatched away the entire food supply. Overwhelmed with fear and lacking confidence, Peaches must now embark on a journy to find the stolen food and gain confidene.'''
+    video_playing = True
     while True:
         clicked = False
-        screen.fill(Color("sky blue"))
-        lines = wrap_text(message, font, WINDOW_SIZE[0] - 20)
-        for i, line in enumerate(lines):
-            text = font.render(line, True, Color("black"))
-            text_rect = text.get_rect(center=(WINDOW_SIZE[0] // 2, 20 + i * 40))
-            screen.blit(text, text_rect)
+        if video_playing:
+        # Read a frame from the video
+            ret, frame = cap.read()
+            if not ret:
+                video_playing = False
+            else:
+                # Convert the frame from BGR to RGB
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = cv2.flip(frame, 1)
+                # Convert the frame to a Pygame surface
+                frame_surface = pygame.surfarray.make_surface(np.rot90(frame))
+
+                # Display the frame on the Pygame window
+                screen.blit(frame_surface, (0, 0))
+        else:
+            # Display the background image
+            screen.blit(bg_img, (0, 0))
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -217,19 +230,32 @@ def level_3_info():
 
     global WINDOW_SIZE
     WINDOW_SIZE = (800, 600)
+    cap = cv2.VideoCapture('data/images/level3.mp4')
 
+    bg_img = pygame.image.load("data/images/level3.png")
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
 
-    message = '''Level 3: Final stretch. The wolf's den is at the top of a 10,000 feet mountain. Peaches must make it to the top and recover all the stolen food. Navigate through the tough terrain of the mountain and find all three chests containing keys to confidence. Then you must fine where the food is hidden.'''
-    
+   # message = '''Peaches the pig was leading a contented life on the serene Harmony Farm alongside her fellow animals. One fateful night, a pack of cunning wolves invaded the farm and snatched away the entire food supply. Overwhelmed with fear and lacking confidence, Peaches must now embark on a journy to find the stolen food and gain confidene.'''
+    video_playing = True
     while True:
         clicked = False
-        screen.fill(Color("sky blue"))
-        lines = wrap_text(message, font, WINDOW_SIZE[0] - 20)
-        for i, line in enumerate(lines):
-            text = font.render(line, True, Color("black"))
-            text_rect = text.get_rect(center=(WINDOW_SIZE[0] // 2, 20 + i * 40))
-            screen.blit(text, text_rect)
+        if video_playing:
+        # Read a frame from the video
+            ret, frame = cap.read()
+            if not ret:
+                video_playing = False
+            else:
+                # Convert the frame from BGR to RGB
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = cv2.flip(frame, 1)
+                # Convert the frame to a Pygame surface
+                frame_surface = pygame.surfarray.make_surface(np.rot90(frame))
+
+                # Display the frame on the Pygame window
+                screen.blit(frame_surface, (0, 0))
+        else:
+            # Display the background image
+            screen.blit(bg_img, (0, 0))
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
