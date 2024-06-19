@@ -126,6 +126,7 @@ def main():
     food_showing = False
     safe_timer = 0
     food_timer = 0
+    handMoved = False
     while True:
         clicked = False
         if player.y >= 600:
@@ -280,9 +281,12 @@ def main():
             if event.type == KEYDOWN:
                 if event.key == K_RIGHT and current_chest_id == None :
                     moving_right = True
+                    handMoved = False
                 if event.key == K_LEFT and current_chest_id == None:
                     moving_left = True
+                    handMoved = False
                 if event.key == K_UP:
+                    handMoved = False
                     if air_timer < 6:
                         player_y_momentum = -5
             if event.type == KEYUP:
@@ -356,12 +360,15 @@ def main():
             if hand_movement[0] == 1:
                 moving_right = True
                 moving_left = False
+                handMoved = True
             elif hand_movement[0] == -1:
                 moving_left = True
                 moving_right = False
+                handMoved = True
             else:
-                moving_right = False
-                moving_left = False
+                if handMoved:
+                    moving_right = False
+                    moving_left = False
             if hand_movement[1] == 1:
                 if air_timer < 6:
                         player_y_momentum = -5
