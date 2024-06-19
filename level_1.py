@@ -119,6 +119,7 @@ def main():
     invincible = False
     invincible_timer = 0
     game_over = False
+    handMove = False
     while True:
         clicked = False
 
@@ -261,9 +262,12 @@ def main():
             if event.type == KEYDOWN:
                 if event.key == K_RIGHT and current_chest_id == None :
                     moving_right = True
+                    handMove = False
                 if event.key == K_LEFT and current_chest_id == None:
                     moving_left = True
+                    handMove = False
                 if event.key == K_UP:
+                    handMove = False
                     if air_timer < 6:
                         player_y_momentum = -5
             if event.type == KEYUP:
@@ -351,12 +355,15 @@ def main():
             if hand_movement[0] == 1:
                 moving_right = True
                 moving_left = False
+                handMove = True
             elif hand_movement[0] == -1:
                 moving_left = True
                 moving_right = False
+                handMove = True
             else:
-                moving_right = False
-                moving_left = False
+                if handMove:
+                    moving_right = False
+                    moving_left = False
             if hand_movement[1] == 1:
                 if air_timer < 6:
                         player_y_momentum = -5
