@@ -11,7 +11,6 @@ class Mouse():
     def __init__(self):
         self.frame = None
         self.frame_size = (150, 100)
-        # Initialize previous average x-coordinate for swipe detection
         self.cap = cv2.VideoCapture(0)
         self.mpHands = mp.solutions.hands
         self.hands = self.mpHands.Hands()

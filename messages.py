@@ -37,7 +37,6 @@ def story_line():
     bg_img = pygame.image.load("data/images/storyline.png")
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
 
-   # message = '''Peaches the pig was leading a contented life on the serene Harmony Farm alongside her fellow animals. One fateful night, a pack of cunning wolves invaded the farm and snatched away the entire food supply. Overwhelmed with fear and lacking confidence, Peaches must now embark on a journy to find the stolen food and gain confidene.'''
     video_playing = True
     while True:
         clicked = False
@@ -58,12 +57,6 @@ def story_line():
         else:
             # Display the background image
             screen.blit(bg_img, (0, 0))
-        #screen.fill(Color("sky blue"))
-        #lines = wrap_text(message, font, WINDOW_SIZE[0] - 20)
-        #for i, line in enumerate(lines):
-            #text = font.render(line, True, Color("black"))
-            #text_rect = text.get_rect(center=(WINDOW_SIZE[0] // 2, 20 + i * 40))
-            #screen.blit(text, text_rect)
        
        
         for event in pygame.event.get():
@@ -108,7 +101,6 @@ def level_1_info():
     bg_img = pygame.image.load("data/images/level1.png")
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
 
-   # message = '''Peaches the pig was leading a contented life on the serene Harmony Farm alongside her fellow animals. One fateful night, a pack of cunning wolves invaded the farm and snatched away the entire food supply. Overwhelmed with fear and lacking confidence, Peaches must now embark on a journy to find the stolen food and gain confidene.'''
     video_playing = True
     while True:
         clicked = False
@@ -129,7 +121,7 @@ def level_1_info():
         else:
             # Display the background image
             screen.blit(bg_img, (0, 0))
-        #screen.fill(Color("sky blue"))
+       
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -172,7 +164,6 @@ def level_2_info():
     bg_img = pygame.image.load("data/images/level2.png")
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
 
-   # message = '''Peaches the pig was leading a contented life on the serene Harmony Farm alongside her fellow animals. One fateful night, a pack of cunning wolves invaded the farm and snatched away the entire food supply. Overwhelmed with fear and lacking confidence, Peaches must now embark on a journy to find the stolen food and gain confidene.'''
     video_playing = True
     while True:
         clicked = False
@@ -235,7 +226,6 @@ def level_3_info():
     bg_img = pygame.image.load("data/images/level3.png")
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
 
-   # message = '''Peaches the pig was leading a contented life on the serene Harmony Farm alongside her fellow animals. One fateful night, a pack of cunning wolves invaded the farm and snatched away the entire food supply. Overwhelmed with fear and lacking confidence, Peaches must now embark on a journy to find the stolen food and gain confidene.'''
     video_playing = True
     while True:
         clicked = False
