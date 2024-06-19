@@ -357,6 +357,7 @@ def main():
             else:
                 moving_right = False
                 moving_left = False
+                
             if hand_movement[1] == 1:
                 if air_timer < 6:
                         player_y_momentum = -5
