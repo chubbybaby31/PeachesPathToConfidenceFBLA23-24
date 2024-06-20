@@ -150,7 +150,7 @@ def level_1_info():
         pygame.display.update()
         dt = clock.tick(60)
 
-def level_2_info():
+def level_2_info(coins):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -199,7 +199,7 @@ def level_2_info():
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            level_2.main()
+            level_2.main(coins)
             pygame.quit()
             sys.exit()
 
@@ -212,7 +212,7 @@ def level_2_info():
         pygame.display.update()
         dt = clock.tick(60)
 
-def level_3_info():
+def level_3_info(coins):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -261,7 +261,7 @@ def level_3_info():
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            level_3.main()
+            level_3.main(coins)
             pygame.quit()
             sys.exit()
 

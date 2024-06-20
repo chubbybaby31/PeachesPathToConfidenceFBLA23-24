@@ -315,8 +315,6 @@ def main():
         screen.blit(lives_text, lives_text_rect)
 
         if game_over:
-            
-
             end_game_screen.fill((193, 225, 193))
             go_rect = pygame.Rect(WINDOW_SIZE[0] // 2 - 200, WINDOW_SIZE[1] // 2 - 150, 400, 300)
             pygame.draw.rect(end_game_screen, (193, 225, 193), go_rect)
@@ -330,10 +328,9 @@ def main():
 
                 if clicked and map_button.checkHover(pygame.mouse.get_pos()):
                     play_effect('data/audio/select.wav')
-                    world_map.main()
+                    world_map.main(coins_collected)
                     pygame.quit()
                     sys.exit()
-
             else:
                 global musicCounter
                 if musicCounter ==0:

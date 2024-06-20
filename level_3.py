@@ -45,7 +45,7 @@ def show_popup(screen, message, popup=False):
         pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(2, 2), border_radius=5)  
         screen.blit(text, text_rect)
 
-def main():
+def main(coins_col):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -128,7 +128,7 @@ def main():
     safe_timer = 0
     food_timer = 0
     handMoved = False
-    coins_collected = 0
+    coins_collected = coins_col
     coins_collected_pos = []
     while True:
         clicked = False
@@ -360,7 +360,7 @@ def main():
                 restart_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
                 if clicked and restart_button.checkHover(pygame.mouse.get_pos()):
-                    main()
+                    main(coins_col)
                     pygame.quit()
                     sys.exit()
 
@@ -398,4 +398,4 @@ def main():
         dt = clock.tick(60)
 
 if __name__ == "__main__":
-    main()
+    main(0)
