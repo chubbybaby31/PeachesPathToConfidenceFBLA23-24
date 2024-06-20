@@ -156,7 +156,7 @@ def main(difficulty=False, coins=0):
         player_rect = handle_collisions(player_rect, border_rects, move_right, move_left, move_up, move_down)
         player_pos = [player_rect.x, player_rect.y]
 
-        coin_text = game_font.render("COINS: " + str(20), True, Color("white"))
+        coin_text = game_font.render("COINS: " + str(coins), True, Color("white"))
         coin_text_rect = coin_text.get_rect(center=(120, 30))
         screen.blit(coin_text, coin_text_rect)
             

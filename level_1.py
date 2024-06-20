@@ -110,7 +110,7 @@ def main(difficulty=False):
 
     near_door = False
 
-    lives = 20
+    lives = 3
     invincible = False
     invincible_timer = 0
     game_over = False
