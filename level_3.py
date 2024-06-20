@@ -48,7 +48,7 @@ def show_popup(screen, message, popup=False):
         pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(2, 2), border_radius=5)  
         screen.blit(text, text_rect)
 
-def main(difficulty, coins_col):
+def main(coins_col, difficulty=False):
 
     pygame.init()
     clock = pygame.time.Clock()
@@ -374,7 +374,8 @@ def main(difficulty, coins_col):
                 if clicked and restart_button.checkHover(pygame.mouse.get_pos()):
                     musicCounter = 0
                     play_effect('data/audio/select.wav')
-                    main(coins_col)
+                    main(coins_col, difficulty=difficulty)
+                    main(coins_col, difficulty=difficulty)
                     pygame.quit()
                     sys.exit()
 
@@ -409,11 +410,8 @@ def main(difficulty, coins_col):
                             player_y_momentum = -5
                 
             except TypeError: pass
-            pygame.display.update()
-            dt = clock.tick(60)
-        else:
-            pygame.display.update()
-            dt = clock.tick(60)
+        pygame.display.update()
+        dt = clock.tick(60)
 
 def play_effect(filename):
     pygame.mixer.Channel(6).play(pygame.mixer.Sound(filename))

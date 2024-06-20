@@ -49,7 +49,7 @@ def show_popup(screen, message, popup=False):
         screen.blit(text, text_rect)
 
 
-def main(difficulty, coins_col):
+def main(coins_col, difficulty=False):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -331,7 +331,8 @@ def main(difficulty, coins_col):
 
                 if clicked and map_button.checkHover(pygame.mouse.get_pos()):
                     play_effect('data/audio/select.wav')
-                    world_map.main(coins_collected)
+                    world_map.main(difficulty=difficulty, coins=coins_collected)
+
                     pygame.quit()
                     sys.exit()
 
@@ -350,7 +351,7 @@ def main(difficulty, coins_col):
                 if clicked and restart_button.checkHover(pygame.mouse.get_pos()):
                     musicCounter = 0
                     play_effect('data/audio/select.wav')
-                    main(coins_col)
+                    main(coins_col, difficulty=difficulty)
                     pygame.quit()
                     sys.exit()
 
@@ -386,11 +387,8 @@ def main(difficulty, coins_col):
                             player_y_momentum = -5
                 
             except TypeError: pass
-            pygame.display.update()
-            dt = clock.tick(60)
-        else:
-            pygame.display.update()
-            dt = clock.tick(60)
+        pygame.display.update()
+        dt = clock.tick(60)
 
 def play_effect(filename):
     pygame.mixer.Channel(5).play(pygame.mixer.Sound(filename))
