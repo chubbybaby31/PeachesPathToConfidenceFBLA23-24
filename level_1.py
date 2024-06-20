@@ -48,7 +48,7 @@ def show_popup(screen, message, popup=False):
         pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(2, 2), border_radius=5)  
         screen.blit(text, text_rect)
 
-def main():
+def main(difficulty = False):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -256,7 +256,7 @@ def main():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == KEYDOWN:
+            if event.type == KEYDOWN and not difficulty:
                 if event.key == K_RIGHT and current_chest_id == None :
                     moving_right = True
                     handMove = False
@@ -346,28 +346,32 @@ def main():
                     sys.exit()
 
             screen.blit(end_game_screen, (0, 0))
-        try:
-            screen.blit(pygame.transform.rotate(hand.frame, -90), (0, 500))
-            hand_movement = hand.movement
-            if hand_movement[0] == 1:
-                moving_right = True
-                moving_left = False
-                handMove = True
-            elif hand_movement[0] == -1:
-                moving_left = True
-                moving_right = False
-                handMove = True
-            else:
-                if handMove:
-                    moving_right = False
+        if difficulty:
+            try:
+                screen.blit(pygame.transform.rotate(hand.frame, -90), (0, 500))
+                hand_movement = hand.movement
+                if hand_movement[0] == 1:
+                    moving_right = True
                     moving_left = False
-            if hand_movement[1] == 1:
-                if air_timer < 6:
-                        player_y_momentum = -5
+                    handMove = True
+                elif hand_movement[0] == -1:
+                    moving_left = True
+                    moving_right = False
+                    handMove = True
+                else:
+                    if handMove:
+                        moving_right = False
+                        moving_left = False
+                if hand_movement[1] == 1:
+                    if air_timer < 6:
+                            player_y_momentum = -5
                 
-        except TypeError: pass
-        pygame.display.update()
-        dt = clock.tick(60)
+            except TypeError: pass
+            pygame.display.update()
+            dt = clock.tick(60)
+        else:
+            pygame.display.update()
+            dt = clock.tick(60)
 
 def play_effect(filename):
     pygame.mixer.Channel(4).play(pygame.mixer.Sound(filename))

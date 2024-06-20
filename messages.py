@@ -7,6 +7,8 @@ import level_1, level_2, level_3
 import cv2
 import numpy as np
 
+
+
 def wrap_text(message, font, max_width):
     words = message.split(' ')
     lines = []
@@ -74,7 +76,7 @@ def story_line():
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main()
+            mode_select()
             pygame.quit()
             sys.exit()
 
@@ -87,7 +89,72 @@ def story_line():
         pygame.display.update()
         dt = clock.tick(60)
 
-def level_1_info():
+def mode_select():
+    pygame.init()
+    clock = pygame.time.Clock()
+    pygame.display.set_caption('FBLA 2023-24')
+
+    font = pygame.font.Font('data/ARCADE_N.TTF', 20)
+
+    global WINDOW_SIZE
+    WINDOW_SIZE = (800, 600)
+    cap = cv2.VideoCapture('data/images/mode_select.mp4')
+
+    bg_img = pygame.image.load("data/images/mode_select.png")
+    screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
+
+    video_playing = True
+    while True:
+        clicked = False
+        if video_playing:
+        # Read a frame from the video
+            ret, frame = cap.read()
+            if not ret:
+                video_playing = False
+            else:
+                # Convert the frame from BGR to RGB
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = cv2.flip(frame, 1)
+                # Convert the frame to a Pygame surface
+                frame_surface = pygame.surfarray.make_surface(np.rot90(frame))
+
+                # Display the frame on the Pygame window
+                screen.blit(frame_surface, (0, 0))
+        else:
+            # Display the background image
+            screen.blit(bg_img, (0, 0))
+       
+       
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == MOUSEBUTTONUP:
+                clicked = True
+            
+        easy_button = Button(font, "EASY", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 450, 150, 50), Color("white"), Color("gray"))
+        easy_button.draw_button(screen, pygame.mouse.get_pos())
+
+        hard_button = Button(font, "HARD", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 520, 150, 50), Color("white"), Color("gray"))
+        hard_button.draw_button(screen, pygame.mouse.get_pos())
+
+        if clicked and easy_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
+            world_map.main(False)
+
+            pygame.quit()
+            sys.exit()
+
+        if clicked and hard_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
+            world_map.main(True)
+            pygame.quit()
+            sys.exit()
+
+        pygame.display.update()
+        dt = clock.tick(60)
+
+def level_1_info(difficulty):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -137,20 +204,20 @@ def level_1_info():
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            level_1.main()
+            level_1.main(difficulty)
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main()
+            world_map.main(difficulty)
             pygame.quit()
             sys.exit()
 
         pygame.display.update()
         dt = clock.tick(60)
 
-def level_2_info():
+def level_2_info(difficulty):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -199,20 +266,20 @@ def level_2_info():
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            level_2.main()
+            level_2.main(difficulty)
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main()
+            world_map.main(difficulty)
             pygame.quit()
             sys.exit()
 
         pygame.display.update()
         dt = clock.tick(60)
 
-def level_3_info():
+def level_3_info(difficulty):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -261,13 +328,13 @@ def level_3_info():
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            level_3.main()
+            level_3.main(difficulty)
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main()
+            world_map.main(difficulty)
             pygame.quit()
             sys.exit()
 

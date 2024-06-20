@@ -26,7 +26,7 @@ def handle_collisions(p_rect, rects, right, left, up, down):
                 p_rect.bottom = rect.top        
     return p_rect
 
-def main():
+def main(difficulty = False):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -131,17 +131,17 @@ def main():
                 if event.key == K_RETURN:
                     if collision_levels[0]:
                         play_effect('data/audio/enterlevel.wav')
-                        messages.level_1_info()
+                        messages.level_1_info(difficulty)
                         pygame.quit()
                         sys.exit()
                     elif collision_levels[1]:
                         play_effect('data/audio/enterlevel.wav')
-                        messages.level_2_info()
+                        messages.level_2_info(difficulty)
                         pygame.quit()
                         sys.exit()
                     elif collision_levels[2]:
                         play_effect('data/audio/enterlevel.wav')
-                        messages.level_3_info()
+                        messages.level_3_info(difficulty)
                         pygame.quit()
                         sys.exit()
         if move_right:
