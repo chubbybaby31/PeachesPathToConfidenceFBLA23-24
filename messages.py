@@ -210,7 +210,7 @@ def level_1_info(difficulty):
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main(difficulty)
+            world_map.main(difficulty=difficulty)
             pygame.quit()
             sys.exit()
 
@@ -266,13 +266,13 @@ def level_2_info(difficulty, coins):
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            level_2.main(difficulty, coins)
+            level_2.main(coins, difficulty=difficulty)
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main(difficulty)
+            world_map.main(difficulty=difficulty, coins=coins)
             pygame.quit()
             sys.exit()
 
@@ -329,13 +329,13 @@ def level_3_info(difficulty, coins):
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            level_3.main(difficulty, coins)
+            level_3.main(coins, difficulty=difficulty)
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main(difficulty)
+            world_map.main(difficulty=difficulty, coins=coins)
             pygame.quit()
             sys.exit()
 

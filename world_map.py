@@ -95,8 +95,6 @@ def main(difficulty=False, coins=0):
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            if event.type == MOUSEBUTTONUP:
-                clicked = True
             if event.type == KEYDOWN:
                 if event.key == K_RIGHT:
                     move_right = True
