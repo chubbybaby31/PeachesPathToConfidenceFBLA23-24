@@ -68,8 +68,9 @@ def main(difficulty=False, coins=0):
     move_right = False
     move_up = False
     move_down = False
+
+    game_font = pygame.font.Font('data/ARCADE_N.TTF', 25)
     while True:
-        clicked = False
         collision_levels = [False, False, False]
         screen.blit(bg_img, (0, 0))
 
@@ -90,8 +91,6 @@ def main(difficulty=False, coins=0):
             show_popup(screen, "PRESS ENTER TO START")
             collision_levels[2] = True
 
-        #print(player_pos)
-        #print(pygame.mouse.get_pos())
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -156,6 +155,10 @@ def main(difficulty=False, coins=0):
 
         player_rect = handle_collisions(player_rect, border_rects, move_right, move_left, move_up, move_down)
         player_pos = [player_rect.x, player_rect.y]
+
+        coin_text = game_font.render("COINS: " + str(coins), True, Color("white"))
+        coin_text_rect = coin_text.get_rect(center=(100, 30))
+        screen.blit(coin_text, coin_text_rect)
             
         pygame.display.update()
         pygame.display.flip()
