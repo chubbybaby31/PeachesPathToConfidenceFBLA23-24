@@ -251,6 +251,7 @@ def main(difficulty=False):
         
         for coin in coins:
             if player.obj.rect.colliderect(coin):
+                play_effect('data/audio/coin.wav')
                 coins_collected_pos.append((coin.x, coin.y))
                 coins_collected += 1
 
