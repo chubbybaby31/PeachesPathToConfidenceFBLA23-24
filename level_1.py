@@ -253,7 +253,6 @@ def main():
             if player.obj.rect.colliderect(coin):
                 coins_collected_pos.append((coin.x, coin.y))
                 coins_collected += 1
-                print(coins_collected)
 
         door_distance = math.sqrt((player.x - door_rect.x)**2 + (player.y - door_rect.y)**2)
         if door_distance <= 30 and not near_door and not unlocked:
@@ -307,8 +306,12 @@ def main():
         c_pts_text_rect = c_pts_text.get_rect(center=(120, 12))
         screen.blit(c_pts_text, c_pts_text_rect)
 
+        coin_text = GUI_font.render("COINS: " + str(coins_collected), True, Color("white"))
+        coin_text_rect = coin_text.get_rect(center=(51, 30))
+        screen.blit(coin_text, coin_text_rect)
+
         lives_text = GUI_font.render("LIVES: " + str(lives), True, Color("white"))
-        lives_text_rect = lives_text.get_rect(center=(51, 30))
+        lives_text_rect = lives_text.get_rect(center=(57, 50))
         screen.blit(lives_text, lives_text_rect)
 
         if game_over:
