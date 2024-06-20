@@ -70,6 +70,7 @@ def main():
     wood_image = pygame.image.load('data/images/wood.png')
     chest_image = pygame.image.load('data/images/chest.png')
     door_image = pygame.image.load('data/images/door_closed.png')
+    coin_image = pygame.image.load('data/images/coin_angle.png')
     forest_bg = pygame.image.load('data/images/forest.jpeg')
     forest_bg = pygame.transform.scale(forest_bg, DISPLAY_SIZE)
     TILE_SIZE = wood_image.get_width()
@@ -116,6 +117,8 @@ def main():
     invincible_timer = 0
     game_over = False
     handMoved = False
+    coins_collected = 0
+    coins_collected_pos = []
     while True:
         clicked = False
         if player.y >= 600:
@@ -139,6 +142,7 @@ def main():
         chests = []
         chest_ids = []
         enemy_borders = []
+        coins = []
         for y, row in enumerate(game_map):
             for x, tile in enumerate(row):
                 if tile == '*' or tile == 'd' or tile == 'g': 
@@ -148,6 +152,15 @@ def main():
                     display.blit(wood_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
                 elif tile == '2' or tile == 'g':
                     display.blit(log_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
+                elif tile == '8':
+                    collected = False
+                    for c in coins_collected_pos:
+                        if c[0] == x * TILE_SIZE and c[1] == y * TILE_SIZE:
+                            collected = True
+                            break
+                    if not collected:
+                        display.blit(coin_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
+                        coins.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
                 elif tile == '9':
                     display.blit(door_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
                     door_rect = pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE * 2)
@@ -247,6 +260,11 @@ def main():
             invincible_timer = 0
             invincible = False
 
+        for coin in coins:
+            if player.obj.rect.colliderect(coin):
+                coins_collected_pos.append((coin.x, coin.y))
+                coins_collected += 1
+
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -284,8 +302,12 @@ def main():
         c_pts_text_rect = c_pts_text.get_rect(center=(120, 12))
         screen.blit(c_pts_text, c_pts_text_rect)
 
+        coin_text = GUI_font.render("COINS: " + str(coins_collected), True, Color("white"))
+        coin_text_rect = coin_text.get_rect(center=(51, 30))
+        screen.blit(coin_text, coin_text_rect)
+
         lives_text = GUI_font.render("LIVES: " + str(lives), True, Color("white"))
-        lives_text_rect = lives_text.get_rect(center=(51, 30))
+        lives_text_rect = lives_text.get_rect(center=(57, 50))
         screen.blit(lives_text, lives_text_rect)
 
         if game_over:
