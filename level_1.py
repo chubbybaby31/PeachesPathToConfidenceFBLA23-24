@@ -7,8 +7,6 @@ import world_map
 from _thread import start_new_thread
 from mouse import Mouse
 
-
-
 global musicCounter
 musicCounter = 0
 hand = Mouse()
@@ -60,13 +58,9 @@ def main():
 
     global DISPLAY_SIZE
     DISPLAY_SIZE = (400, 300)
-
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
-
     display = pygame.Surface(DISPLAY_SIZE)
-
     end_game_screen = pygame.Surface(WINDOW_SIZE)
-
 
     e.load_animations('data/images/entities/')
 
@@ -82,9 +76,9 @@ def main():
     GUI_font = pygame.font.Font('data/ARCADE_N.TTF', 10)
     EG_font = pygame.font.Font('data/ARCADE_N.TTF', 25)
 
-    confidence_quips = {3: " Set Small Goals: Start with achievable goals to build up your sense of accomplishment. Completing small tasks successfully can boost your confidence gradually.", 
-                        4: " Positive Self-Talk: Replace negative thoughts with positive affirmations. Remind yourself of your strengths and achievements, no matter how small they may seem.", 
-                        5: " Learn New Skills: Acquiring new skills or hobbies can enhance your self-esteem. It shows you are capable of growth and adaptability."}
+    confidence_quips = {3: "Set Small Goals: Start with achievable goals to build up your sense of accomplishment. Completing small tasks successfully can boost your confidence gradually.", 
+                        4: "Positive Self-Talk: Replace negative thoughts with positive affirmations. Remind yourself of your strengths and achievements, no matter how small they may seem.", 
+                        5: "Learn New Skills: Acquiring new skills or hobbies can enhance your self-esteem. It shows you are capable of growth and adaptability."}
 
     confidence_collected = {3: False, 4: False, 5: False}
 

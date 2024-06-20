@@ -158,7 +158,6 @@ def main():
                     chest_ids.append(int(tile))
                 if tile == '1' or tile == '2' or tile == '9' or tile == 'd' or tile == 'g':
                     tile_rects.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
-        #print('\n')
 
         player_movement = [0, 0]
         if moving_right:

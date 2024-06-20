@@ -159,9 +159,6 @@ def main():
         scroll[0] = int(scroll[0])
         scroll[1] = int(scroll[1])
 
-        # display.blit(pygame.transform.scale(farm_image, (120, 120)), (DISPLAY_SIZE[0] // 2 - 60, 17))
-        # pygame.draw.rect(display, (55, 148, 86), pygame.Rect(0, 132, 400, 200))
-
         tile_rects = []
         chests = []
         chest_ids = []
