@@ -71,6 +71,7 @@ def main():
     chest_image = pygame.image.load('data/images/chest.png')
     door_image = pygame.image.load('data/images/door_closed.png')
     farm_image = pygame.image.load('data/images/farm.png')
+    coin_image = pygame.image.load('data/images/coin_angle.png')
     TILE_SIZE = dirt_image.get_width()
 
     GUI_font = pygame.font.Font('data/ARCADE_N.TTF', 10)
@@ -149,6 +150,8 @@ def main():
                     display.blit(dirt_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
                 elif tile == '2' or tile == 'g':
                     display.blit(grass_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
+                elif tile == '8':
+                    display.blit(coin_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
                 elif tile == '9':
                     display.blit(door_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
                     door_rect = pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE * 2)
