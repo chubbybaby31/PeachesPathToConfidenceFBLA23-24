@@ -115,6 +115,8 @@ def main(difficulty = False):
     invincible_timer = 0
     game_over = False
     handMove = False
+    coins_collected = 0
+    coins_collected_pos = []
     while True:
         clicked = False
 
@@ -141,17 +143,24 @@ def main(difficulty = False):
         chests = []
         chest_ids = []
         enemy_borders = []
+        coins = []
         for y, row in enumerate(game_map):
             for x, tile in enumerate(row):
                 if tile == '*' or tile == 'd' or tile == 'g': 
                     enemy_borders.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
-                    #print(x * TILE_SIZE , y * TILE_SIZE)
                 if tile == '1' or tile == 'd':
                     display.blit(dirt_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
                 elif tile == '2' or tile == 'g':
                     display.blit(grass_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
                 elif tile == '8':
-                    display.blit(coin_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
+                    collected = False
+                    for c in coins_collected_pos:
+                        if c[0] == x * TILE_SIZE and c[1] == y * TILE_SIZE:
+                            collected = True
+                            break
+                    if not collected:
+                        display.blit(coin_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
+                        coins.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
                 elif tile == '9':
                     display.blit(door_image, (x * TILE_SIZE - scroll[0], y * TILE_SIZE - scroll[1]))
                     door_rect = pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE * 2)
@@ -239,6 +248,11 @@ def main(difficulty = False):
         if invincible_timer >= 3000:
             invincible_timer = 0
             invincible = False
+        
+        for coin in coins:
+            if player.obj.rect.colliderect(coin):
+                coins_collected_pos.append((coin.x, coin.y))
+                coins_collected += 1
 
         door_distance = math.sqrt((player.x - door_rect.x)**2 + (player.y - door_rect.y)**2)
         if door_distance <= 30 and not near_door and not unlocked:
@@ -292,13 +306,15 @@ def main(difficulty = False):
         c_pts_text_rect = c_pts_text.get_rect(center=(120, 12))
         screen.blit(c_pts_text, c_pts_text_rect)
 
+        coin_text = GUI_font.render("COINS: " + str(coins_collected), True, Color("white"))
+        coin_text_rect = coin_text.get_rect(center=(51, 30))
+        screen.blit(coin_text, coin_text_rect)
+
         lives_text = GUI_font.render("LIVES: " + str(lives), True, Color("white"))
-        lives_text_rect = lives_text.get_rect(center=(51, 30))
+        lives_text_rect = lives_text.get_rect(center=(57, 50))
         screen.blit(lives_text, lives_text_rect)
 
         if game_over:
-            
-
             end_game_screen.fill((193, 225, 193))
             go_rect = pygame.Rect(WINDOW_SIZE[0] // 2 - 200, WINDOW_SIZE[1] // 2 - 150, 400, 300)
             pygame.draw.rect(end_game_screen, (193, 225, 193), go_rect)
@@ -312,10 +328,9 @@ def main(difficulty = False):
 
                 if clicked and map_button.checkHover(pygame.mouse.get_pos()):
                     play_effect('data/audio/select.wav')
-                    world_map.main()
+                    world_map.main(coins_collected)
                     pygame.quit()
                     sys.exit()
-
             else:
                 global musicCounter
                 if musicCounter ==0:
