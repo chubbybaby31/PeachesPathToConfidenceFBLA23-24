@@ -6,6 +6,9 @@ import menu
 import messages
 from mouse import Mouse
 
+global musicCounter
+musicCounter = 0
+
 hand = Mouse()
 
 def load_map(path):
@@ -264,6 +267,7 @@ def main(difficulty, coins_col):
             enemy[2].change_frame(1)
 
             if player.obj.rect.colliderect(enemy[2].obj.rect) and not invincible: 
+                play_effect('data/audio/damaged.wav')
                 lives -= 1
                 invincible = True
 
@@ -311,12 +315,14 @@ def main(difficulty, coins_col):
                 if event.key == K_LEFT:
                     moving_left = False
                 if event.key == K_e and chest_popup_id != None:
+                    play_effect('data/audio/chest.wav')
                     confidence_collected[chest_popup_id] = True
                     current_chest_id = chest_popup_id
                     c_pts += 1
                 if event.key == K_ESCAPE:
                     current_chest_id = None
                 if event.key == K_RETURN and unlocked:
+                    play_effect('data/audio/level_complete.wav')
                     food_aquired = True
             if event.type == MOUSEBUTTONUP:
                 clicked = True
@@ -348,11 +354,16 @@ def main(difficulty, coins_col):
                 map_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
                 if clicked and map_button.checkHover(pygame.mouse.get_pos()):
+                    play_effect('data/audio/select.wav')
                     messages.final()
                     pygame.quit()
                     sys.exit()
 
             else:
+                global musicCounter
+                if musicCounter ==0:
+                    play_effect('data/audio/lose.wav')
+                    musicCounter += 1
                 fail_text = EG_font.render("GAME OVER", True, Color("red"))
                 fail_text_rect = fail_text.get_rect(center=(WINDOW_SIZE[0] // 2, 180))
                 end_game_screen.blit(fail_text, fail_text_rect)
@@ -361,6 +372,8 @@ def main(difficulty, coins_col):
                 restart_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
                 if clicked and restart_button.checkHover(pygame.mouse.get_pos()):
+                    musicCounter = 0
+                    play_effect('data/audio/select.wav')
                     main(coins_col)
                     pygame.quit()
                     sys.exit()
@@ -369,9 +382,10 @@ def main(difficulty, coins_col):
             menu_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
             if clicked and menu_button.checkHover(pygame.mouse.get_pos()):
-                    menu.main()
-                    pygame.quit()
-                    sys.exit()
+                play_effect('data/audio/select.wav')
+                menu.main()
+                pygame.quit()
+                sys.exit()
 
             screen.blit(end_game_screen, (0, 0))
         if difficulty:
@@ -400,6 +414,9 @@ def main(difficulty, coins_col):
         else:
             pygame.display.update()
             dt = clock.tick(60)
+
+def play_effect(filename):
+    pygame.mixer.Channel(6).play(pygame.mixer.Sound(filename))
 
 if __name__ == "__main__":
     main(0)

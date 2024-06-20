@@ -344,7 +344,6 @@ def main(difficulty = False):
                 restart_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
                 if clicked and restart_button.checkHover(pygame.mouse.get_pos()):
-                    
                     musicCounter = 0
                     play_effect('data/audio/select.wav')
                     main()
@@ -355,10 +354,10 @@ def main(difficulty = False):
             menu_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
             if clicked and menu_button.checkHover(pygame.mouse.get_pos()):
-                    play_effect('data/audio/select.wav')
-                    menu.main()
-                    pygame.quit()
-                    sys.exit()
+                play_effect('data/audio/select.wav')
+                menu.main()
+                pygame.quit()
+                sys.exit()
 
             screen.blit(end_game_screen, (0, 0))
         if difficulty:
