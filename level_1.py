@@ -97,13 +97,13 @@ def main(difficulty=False):
     player = e.entity(0, 400, 20, 25, 'player')
 
     enemies = []
-    enemies.append([2, 0, e.entity(550, 330, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(900, 540, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1000, 200, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1100, 200, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(350, 90, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(300, 140, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(400, 140, 28, 20, 'enemy')])
+    enemies.append([2, 0, e.entity(550, 330, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(900, 540, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1000, 200, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1100, 200, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(350, 90, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(300, 140, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(400, 140, 22, 16, 'enemy')])
 
     near_chest = False
     current_chest_id = None

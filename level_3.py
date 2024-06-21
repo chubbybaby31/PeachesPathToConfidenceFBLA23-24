@@ -105,19 +105,19 @@ def main(coins_col, difficulty=False):
     player = e.entity(0, 500, 20, 25, 'player')
 
     enemies = []
-    enemies.append([2, 0, e.entity(700, 10, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(500, 30, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(270, 75, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(50, 110, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(400, 190, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1200, 235, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(800, 250, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(900, 250, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1750, 410, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1100, 460, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(400, 475, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1442, 475, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(644, 510, 28, 20, 'enemy')])
+    enemies.append([2, 0, e.entity(700, 10, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(500, 30, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(270, 75, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(50, 110, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(400, 190, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1200, 235, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(800, 250, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(900, 250, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1750, 410, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1100, 460, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(400, 475, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1442, 475, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(644, 510, 22, 16, 'enemy')])
     near_chest = False
     current_chest_id = None
 
