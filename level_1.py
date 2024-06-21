@@ -110,7 +110,7 @@ def main(difficulty=False):
 
     near_door = False
 
-    lives = 3
+    lives = 20
     invincible = False
     invincible_timer = 0
     game_over = False
@@ -329,7 +329,7 @@ def main(difficulty=False):
 
                 if clicked and map_button.checkHover(pygame.mouse.get_pos()):
                     play_effect('data/audio/select.wav', 5)
-                    world_map.main(difficulty=difficulty, coins=coins_collected)
+                    world_map.main(difficulty=difficulty, coins=coins_collected, level=1)
                     pygame.quit()
                     sys.exit()
             else:

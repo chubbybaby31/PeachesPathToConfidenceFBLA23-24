@@ -26,7 +26,7 @@ def handle_collisions(p_rect, rects, right, left, up, down):
                 p_rect.bottom = rect.top        
     return p_rect
 
-def main(difficulty=False, coins=0):
+def main(difficulty=False, coins=0, level=0):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -52,7 +52,8 @@ def main(difficulty=False, coins=0):
     player_img = pygame.image.load("data/images/entities/player/idle/idle_0.png")
     player_img = pygame.transform.scale(player_img, (24, 30))
     player_rect = player_img.get_rect()
-    player_pos = [134, 569]
+    level_pos = {0: [134, 569], 1: [145, 460], 2: [720, 150]}
+    player_pos = level_pos[level]
     player_speed = 4
 
     level_select_img = pygame.image.load("data/images/level.png")

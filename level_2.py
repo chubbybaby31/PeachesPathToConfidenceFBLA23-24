@@ -332,7 +332,7 @@ def main(coins_col, difficulty=False):
 
                 if clicked and map_button.checkHover(pygame.mouse.get_pos()):
                     play_effect('data/audio/select.wav', 5)
-                    world_map.main(difficulty=difficulty, coins=coins_collected)
+                    world_map.main(difficulty=difficulty, coins=coins_collected, level=2)
 
                     pygame.quit()
                     sys.exit()
