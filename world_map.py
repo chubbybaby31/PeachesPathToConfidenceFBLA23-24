@@ -3,6 +3,8 @@ from pygame.locals import *
 from button import Button
 import level_1, level_2, level_3
 import messages
+import menu
+
 
 def show_popup(screen, message, popup=False):
     font = pygame.font.SysFont(None, 40)
@@ -52,7 +54,7 @@ def main(difficulty=False, coins=0, level=0):
     player_img = pygame.image.load("data/images/entities/player/idle/idle_0.png")
     player_img = pygame.transform.scale(player_img, (24, 30))
     player_rect = player_img.get_rect()
-    level_pos = {0: [134, 569], 1: [145, 460], 2: [720, 150]}
+    level_pos = {0: [134, 569], 1: [145, 460], 2: [720, 150], 3: [70,90]}
     player_pos = level_pos[level]
     player_speed = 4
 
@@ -84,9 +86,13 @@ def main(difficulty=False, coins=0, level=0):
         screen.blit(player_img, (player_pos[0], player_pos[1]))
         
         font = pygame.font.Font('data/ARCADE_N.TTF', 20)
+        font_menu = pygame.font.Font('data/ARCADE_N.TTF', 15)
 
         shop_button = Button(font, "SHOP", Color("black"), pygame.Rect(WINDOW_SIZE[0] - 175, 10, 150, 50), Color("white"), Color("gray"))
         shop_button.draw_button(screen, pygame.mouse.get_pos())
+
+        menu_button = Button(font_menu, "MENU", Color("black"), pygame.Rect(10, 550, 100, 40), Color("white"), Color("gray"))
+        menu_button.draw_button(screen, pygame.mouse.get_pos())
 
         if level_1_select.colliderect(player_rect):
             show_popup(screen, "PRESS ENTER TO START")
@@ -167,6 +173,9 @@ def main(difficulty=False, coins=0, level=0):
                 messages.shop(coins)
             elif difficulty:
                 show_popup(screen, "CAN'T USE SHOP IN HARD MODE")
+        if menu_button.checkHover(pygame.mouse.get_pos()) and clicked:  
+            play_effect('data/audio/select.wav')
+            menu.main()
 
         player_rect = handle_collisions(player_rect, border_rects, move_right, move_left, move_up, move_down)
         player_pos = [player_rect.x, player_rect.y]

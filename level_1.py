@@ -351,12 +351,12 @@ def main(difficulty=False):
                     pygame.quit()
                     sys.exit()
 
-            menu_button = Button(EG_font, "MENU", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 310, 150, 50), Color("gray"), Color("light gray"))
+            menu_button = Button(EG_font, "MAP", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 310, 150, 50), Color("gray"), Color("light gray"))
             menu_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
             if clicked and menu_button.checkHover(pygame.mouse.get_pos()):
                 play_effect('data/audio/select.wav', 5)
-                menu.main()
+                world_map.main(difficulty=difficulty, coins=coins_collected, level=1)
                 pygame.quit()
                 sys.exit()
 
