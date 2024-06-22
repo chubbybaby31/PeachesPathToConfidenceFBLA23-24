@@ -430,8 +430,49 @@ def final():
         pygame.display.update()
         dt = clock.tick(60)
 
+def shop(coins):
+    pygame.init()
+    clock = pygame.time.Clock()
+    pygame.display.set_caption('FBLA 2023-24')
+
+    font = pygame.font.Font('data/ARCADE_N.TTF', 20)
+    global WINDOW_SIZE
+    WINDOW_SIZE = (800, 600)
+
+    screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
+    
+    while True:
+        clicked = False
+        screen.fill(Color("sky blue"))
+        
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == MOUSEBUTTONUP:
+                clicked = True
+            
+        back_button = Button(font, "BACK", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 520, 150, 50), Color("white"), Color("gray"))
+        back_button.draw_button(screen, pygame.mouse.get_pos())
+
+        if clicked and back_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
+            world_map.main()
+            pygame.quit()
+            sys.exit()
+        
+        coin_text = font.render("COINS: " + str(coins), True, Color("white"))
+        coin_text_rect = coin_text.get_rect(center=(100, 30))
+        screen.blit(coin_text, coin_text_rect)
+
+        pygame.display.update()
+        dt = clock.tick(60)
+
 def play_effect(filename):
     pygame.mixer.Channel(2).play(pygame.mixer.Sound(filename))
+
+
+
 
 if __name__ == '__main__':
     pygame.mixer.init()

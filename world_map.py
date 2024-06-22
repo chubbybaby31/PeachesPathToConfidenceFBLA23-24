@@ -161,8 +161,12 @@ def main(difficulty=False, coins=0, level=0):
         elif move_down:
             player_rect.y += player_speed
 
-        if clicked and shop_button.checkHover(pygame.mouse.get_pos()):
-            play_effect('data/audio/select.wav')
+        if shop_button.checkHover(pygame.mouse.get_pos()):
+            if clicked and not difficulty:
+                play_effect('data/audio/select.wav')
+                messages.shop(coins)
+            elif difficulty:
+                show_popup(screen, "CAN'T USE SHOP IN HARD MODE")
 
         player_rect = handle_collisions(player_rect, border_rects, move_right, move_left, move_up, move_down)
         player_pos = [player_rect.x, player_rect.y]
