@@ -105,19 +105,19 @@ def main(coins_col, difficulty=False):
     player = e.entity(0, 500, 20, 25, 'player')
 
     enemies = []
-    enemies.append([2, 0, e.entity(700, 10, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(500, 30, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(270, 75, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(50, 110, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(400, 190, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1200, 235, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(800, 250, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(900, 250, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1750, 410, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1100, 460, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(400, 475, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1442, 475, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(644, 510, 28, 20, 'enemy')])
+    enemies.append([2, 0, e.entity(700, 10, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(500, 30, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(270, 75, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(50, 110, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(400, 190, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1200, 235, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(800, 250, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(900, 250, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1750, 410, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1100, 460, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(400, 475, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1442, 475, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(644, 510, 22, 16, 'enemy')])
     near_chest = False
     current_chest_id = None
 
@@ -131,7 +131,7 @@ def main(coins_col, difficulty=False):
     food_showing = False
     safe_timer = 0
     food_timer = 0
-    handMoved = False
+    handMove = False
     coins_collected = coins_col
     coins_collected_pos = []
     while True:
@@ -267,7 +267,7 @@ def main(coins_col, difficulty=False):
             enemy[2].change_frame(1)
 
             if player.obj.rect.colliderect(enemy[2].obj.rect) and not invincible: 
-                play_effect('data/audio/damaged.wav')
+                play_effect('data/audio/damaged.wav', 1)
                 lives -= 1
                 invincible = True
 
@@ -291,7 +291,7 @@ def main(coins_col, difficulty=False):
 
         for coin in coins:
             if player.obj.rect.colliderect(coin):
-                play_effect('data/audio/coin.wav')
+                play_effect('data/audio/coin.wav', 2)
                 coins_collected_pos.append((coin.x, coin.y))
                 coins_collected += 1
 
@@ -316,14 +316,14 @@ def main(coins_col, difficulty=False):
                 if event.key == K_LEFT:
                     moving_left = False
                 if event.key == K_e and chest_popup_id != None:
-                    play_effect('data/audio/chest.wav')
+                    play_effect('data/audio/chest.wav', 3)
                     confidence_collected[chest_popup_id] = True
                     current_chest_id = chest_popup_id
                     c_pts += 1
                 if event.key == K_ESCAPE:
                     current_chest_id = None
                 if event.key == K_RETURN and unlocked:
-                    play_effect('data/audio/level_complete.wav')
+                    play_effect('data/audio/level_complete.wav', 4)
                     food_aquired = True
             if event.type == MOUSEBUTTONUP:
                 clicked = True
@@ -355,15 +355,15 @@ def main(coins_col, difficulty=False):
                 map_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
                 if clicked and map_button.checkHover(pygame.mouse.get_pos()):
-                    play_effect('data/audio/select.wav')
+                    play_effect('data/audio/select.wav', 5)
                     messages.final()
                     pygame.quit()
                     sys.exit()
 
             else:
                 global musicCounter
-                if musicCounter ==0:
-                    play_effect('data/audio/lose.wav')
+                if musicCounter == 0:
+                    play_effect('data/audio/lose.wav', 6)
                     musicCounter += 1
                 fail_text = EG_font.render("GAME OVER", True, Color("red"))
                 fail_text_rect = fail_text.get_rect(center=(WINDOW_SIZE[0] // 2, 180))
@@ -374,7 +374,7 @@ def main(coins_col, difficulty=False):
 
                 if clicked and restart_button.checkHover(pygame.mouse.get_pos()):
                     musicCounter = 0
-                    play_effect('data/audio/select.wav')
+                    play_effect('data/audio/select.wav', 5)
                     main(coins_col, difficulty=difficulty)
                     main(coins_col, difficulty=difficulty)
                     pygame.quit()
@@ -384,7 +384,7 @@ def main(coins_col, difficulty=False):
             menu_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
             if clicked and menu_button.checkHover(pygame.mouse.get_pos()):
-                play_effect('data/audio/select.wav')
+                play_effect('data/audio/select.wav', 5)
                 menu.main()
                 pygame.quit()
                 sys.exit()
@@ -414,8 +414,8 @@ def main(coins_col, difficulty=False):
         pygame.display.update()
         dt = clock.tick(60)
 
-def play_effect(filename):
-    pygame.mixer.Channel(6).play(pygame.mixer.Sound(filename))
+def play_effect(filename, channel):
+    pygame.mixer.Channel(channel).play(pygame.mixer.Sound(filename))
 
 if __name__ == "__main__":
     main(0)

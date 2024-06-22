@@ -97,20 +97,20 @@ def main(difficulty=False):
     player = e.entity(0, 400, 20, 25, 'player')
 
     enemies = []
-    enemies.append([2, 0, e.entity(550, 330, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(900, 540, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1000, 200, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(1100, 200, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(350, 90, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(300, 140, 28, 20, 'enemy')])
-    enemies.append([2, 0, e.entity(400, 140, 28, 20, 'enemy')])
+    enemies.append([2, 0, e.entity(550, 330, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(900, 540, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1000, 200, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(1100, 200, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(350, 90, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(300, 140, 22, 16, 'enemy')])
+    enemies.append([2, 0, e.entity(400, 140, 22, 16, 'enemy')])
 
     near_chest = False
     current_chest_id = None
 
     near_door = False
 
-    lives = 3
+    lives = 20
     invincible = False
     invincible_timer = 0
     game_over = False
@@ -239,7 +239,7 @@ def main(difficulty=False):
             enemy[2].change_frame(1)
 
             if player.obj.rect.colliderect(enemy[2].obj.rect) and not invincible: 
-                play_effect('data/audio/damaged.wav')
+                play_effect('data/audio/damaged.wav', 1)
                 lives -= 1
                 invincible = True
 
@@ -251,7 +251,7 @@ def main(difficulty=False):
         
         for coin in coins:
             if player.obj.rect.colliderect(coin):
-                play_effect('data/audio/coin.wav')
+                play_effect('data/audio/coin.wav', 2)
                 coins_collected_pos.append((coin.x, coin.y))
                 coins_collected += 1
 
@@ -288,14 +288,14 @@ def main(difficulty=False):
                 if event.key == K_LEFT:
                     moving_left = False
                 if event.key == K_e and chest_popup_id != None:
-                    play_effect('data/audio/chest.wav')
+                    play_effect('data/audio/chest.wav', 3)
                     confidence_collected[chest_popup_id] = True
                     current_chest_id = chest_popup_id
                     c_pts += 1
                 if event.key == K_ESCAPE:
                     current_chest_id = None
                 if event.key == K_RETURN and unlocked:
-                    play_effect('data/audio/level_complete.wav')
+                    play_effect('data/audio/level_complete.wav', 4)
                     print("level complete")
                     game_over = True
             if event.type == MOUSEBUTTONUP:
@@ -328,14 +328,14 @@ def main(difficulty=False):
                 map_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
                 if clicked and map_button.checkHover(pygame.mouse.get_pos()):
-                    play_effect('data/audio/select.wav')
-                    world_map.main(difficulty=difficulty, coins=coins_collected)
+                    play_effect('data/audio/select.wav', 5)
+                    world_map.main(difficulty=difficulty, coins=coins_collected, level=1)
                     pygame.quit()
                     sys.exit()
             else:
                 global musicCounter
-                if musicCounter ==0:
-                    play_effect('data/audio/lose.wav')
+                if musicCounter == 0:
+                    play_effect('data/audio/lose.wav', 6)
                     musicCounter += 1
                 fail_text = EG_font.render("GAME OVER", True, Color("red"))
                 fail_text_rect = fail_text.get_rect(center=(WINDOW_SIZE[0] // 2, 180))
@@ -346,7 +346,7 @@ def main(difficulty=False):
 
                 if clicked and restart_button.checkHover(pygame.mouse.get_pos()):
                     musicCounter = 0
-                    play_effect('data/audio/select.wav')
+                    play_effect('data/audio/select.wav', 5)
                     main(difficulty=difficulty)
                     pygame.quit()
                     sys.exit()
@@ -355,7 +355,7 @@ def main(difficulty=False):
             menu_button.draw_button(end_game_screen, pygame.mouse.get_pos())
 
             if clicked and menu_button.checkHover(pygame.mouse.get_pos()):
-                play_effect('data/audio/select.wav')
+                play_effect('data/audio/select.wav', 5)
                 menu.main()
                 pygame.quit()
                 sys.exit()
@@ -385,8 +385,8 @@ def main(difficulty=False):
         pygame.display.update()
         dt = clock.tick(60)
 
-def play_effect(filename):
-    pygame.mixer.Channel(4).play(pygame.mixer.Sound(filename))
+def play_effect(filename, channel):
+    pygame.mixer.Channel(channel).play(pygame.mixer.Sound(filename))
 
 if __name__ == "__main__":
     pygame.mixer.init()
