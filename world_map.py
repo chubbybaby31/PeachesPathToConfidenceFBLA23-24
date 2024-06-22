@@ -71,6 +71,7 @@ def main(difficulty=False, coins=0):
 
     game_font = pygame.font.Font('data/ARCADE_N.TTF', 25)
     while True:
+        clicked=False
         collision_levels = [False, False, False]
         screen.blit(bg_img, (0, 0))
 
@@ -80,6 +81,11 @@ def main(difficulty=False, coins=0):
         player_rect.x = player_pos[0]
         player_rect.y = player_pos[1]
         screen.blit(player_img, (player_pos[0], player_pos[1]))
+        
+        font = pygame.font.Font('data/ARCADE_N.TTF', 20)
+
+        shop_button = Button(font, "SHOP", Color("black"), pygame.Rect(WINDOW_SIZE[0] - 175, 10, 150, 50), Color("white"), Color("gray"))
+        shop_button.draw_button(screen, pygame.mouse.get_pos())
 
         if level_1_select.colliderect(player_rect):
             show_popup(screen, "PRESS ENTER TO START")
@@ -92,6 +98,8 @@ def main(difficulty=False, coins=0):
             collision_levels[2] = True
 
         for event in pygame.event.get():
+            if event.type == MOUSEBUTTONUP:
+                clicked = True
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
@@ -125,6 +133,7 @@ def main(difficulty=False, coins=0):
                     move_up = False
                 if event.key == K_DOWN:
                     move_down = False
+                
                 if event.key == K_RETURN:
                     if collision_levels[0]:
                         play_effect('data/audio/enterlevel.wav')
@@ -150,6 +159,9 @@ def main(difficulty=False, coins=0):
             player_rect.y -= player_speed
         elif move_down:
             player_rect.y += player_speed
+
+        if clicked and shop_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
 
         player_rect = handle_collisions(player_rect, border_rects, move_right, move_left, move_up, move_down)
         player_pos = [player_rect.x, player_rect.y]

@@ -279,7 +279,6 @@ def level_2_info(difficulty, coins):
         pygame.display.update()
         dt = clock.tick(60)
 
-
 def level_3_info(difficulty, coins):
     pygame.init()
     clock = pygame.time.Clock()
