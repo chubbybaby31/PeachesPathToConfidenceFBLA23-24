@@ -266,7 +266,7 @@ def main(difficulty=False):
         elif current_chest_id != None:
             show_popup(display, confidence_quips[current_chest_id])
             show_popup(display, " Press ESC to exit", popup=True)
-
+        
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
