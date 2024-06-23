@@ -85,7 +85,7 @@ def story_line():
             sys.exit()
 
         pygame.display.update()
-        dt = clock.tick(60)
+        dt = clock.tick(30)
 
 def mode_select():
     pygame.init()
@@ -150,7 +150,7 @@ def mode_select():
             sys.exit()
 
         pygame.display.update()
-        dt = clock.tick(60)
+        dt = clock.tick(30)
 
 def level_1_info(difficulty):
     pygame.init()
@@ -208,12 +208,12 @@ def level_1_info(difficulty):
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main(difficulty=difficulty)
+            world_map.main(difficulty=difficulty, level=1)
             pygame.quit()
             sys.exit()
 
         pygame.display.update()
-        dt = clock.tick(60)
+        dt = clock.tick(30)
 
 def level_2_info(difficulty, coins):
     pygame.init()
@@ -270,12 +270,12 @@ def level_2_info(difficulty, coins):
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main(difficulty=difficulty, coins=coins)
+            world_map.main(difficulty=difficulty, coins=coins, level=2)
             pygame.quit()
             sys.exit()
 
         pygame.display.update()
-        dt = clock.tick(60)
+        dt = clock.tick(30)
 
 def level_3_info(difficulty, coins):
     pygame.init()
@@ -332,12 +332,12 @@ def level_3_info(difficulty, coins):
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main(difficulty=difficulty, coins=coins)
+            world_map.main(difficulty=difficulty, coins=coins, level=3)
             pygame.quit()
             sys.exit()
 
         pygame.display.update()
-        dt = clock.tick(60)
+        dt = clock.tick(30)
 
 def instructions():
     pygame.init()
@@ -434,15 +434,35 @@ def shop(coins):
     pygame.display.set_caption('FBLA 2023-24')
 
     font = pygame.font.Font('data/ARCADE_N.TTF', 20)
+
     global WINDOW_SIZE
     WINDOW_SIZE = (800, 600)
+    cap = cv2.VideoCapture('data/images/shop.mp4')
 
+    bg_img = pygame.image.load("data/images/shop.png")
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
-    
+
+    video_playing = True
     while True:
         clicked = False
-        screen.fill(Color("sky blue"))
-        
+        if video_playing:
+        # Read a frame from the video
+            ret, frame = cap.read()
+            if not ret:
+                video_playing = False
+            else:
+                # Convert the frame from BGR to RGB
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = cv2.flip(frame, 1)
+                # Convert the frame to a Pygame surface
+                frame_surface = pygame.surfarray.make_surface(np.rot90(frame))
+
+                # Display the frame on the Pygame window
+                screen.blit(frame_surface, (0, 0))
+                
+        else:
+            # Display the background image
+            screen.blit(bg_img, (0, 0))
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -453,18 +473,21 @@ def shop(coins):
         back_button = Button(font, "BACK", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 520, 150, 50), Color("white"), Color("gray"))
         back_button.draw_button(screen, pygame.mouse.get_pos())
 
+
+        powerup_button = Button(font, "BACK", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 520, 150, 50), Color("white"), Color("gray"))
+
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
             world_map.main()
             pygame.quit()
             sys.exit()
         
-        coin_text = font.render("COINS: " + str(coins), True, Color("white"))
+        coin_text = font.render("COINS: " + str(coins), True, Color("black"))
         coin_text_rect = coin_text.get_rect(center=(100, 30))
         screen.blit(coin_text, coin_text_rect)
 
         pygame.display.update()
-        dt = clock.tick(60)
+        dt = clock.tick(30)
 
 def play_effect(filename):
     pygame.mixer.Channel(2).play(pygame.mixer.Sound(filename))
