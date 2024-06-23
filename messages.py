@@ -7,8 +7,6 @@ import level_1, level_2, level_3
 import cv2
 import numpy as np
 
-
-
 def wrap_text(message, font, max_width):
     words = message.split(' ')
     lines = []
@@ -470,9 +468,6 @@ def shop(coins):
 
 def play_effect(filename):
     pygame.mixer.Channel(2).play(pygame.mixer.Sound(filename))
-
-
-
 
 if __name__ == '__main__':
     pygame.mixer.init()

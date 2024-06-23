@@ -8,7 +8,6 @@ import numpy as np
 from mouse import Mouse
 
 
-
 def main():
 
     pygame.init()
@@ -96,7 +95,6 @@ def play_bg_music(filename):
     bg_music = pygame.mixer.Sound(filename)
     bg_music.set_volume(0.2)
     pygame.mixer.Channel(0).play(bg_music, -1) 
-    
 
 def play_effect(filename):
     pygame.mixer.Channel(1).play(pygame.mixer.Sound(filename))
