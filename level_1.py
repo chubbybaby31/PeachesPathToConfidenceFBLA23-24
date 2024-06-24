@@ -307,7 +307,6 @@ def main(power_ups, difficulty=False):
                     print("level complete")
                     game_over = True
                 if event.key == K_SPACE and power_ups[2]:
-                    print("dash")
                     dash = 30
             if event.type == MOUSEBUTTONUP:
                 clicked = True
