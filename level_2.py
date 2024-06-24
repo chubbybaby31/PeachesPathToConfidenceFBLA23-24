@@ -49,7 +49,7 @@ def show_popup(screen, message, popup=False):
         screen.blit(text, text_rect)
 
 
-def main(coins_col, difficulty=False):
+def main(coins_col, power_ups, difficulty=False):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')

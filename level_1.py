@@ -48,7 +48,7 @@ def show_popup(screen, message, popup=False):
         pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(2, 2), border_radius=5)  
         screen.blit(text, text_rect)
 
-def main(difficulty=False):
+def main(power_ups, difficulty=False):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -110,13 +110,18 @@ def main(difficulty=False):
 
     near_door = False
 
-    lives = 20
+    lives = 3
+    if power_ups[1]: lives += 1
     invincible = False
     invincible_timer = 0
     game_over = False
     handMove = False
     coins_collected = 0
     coins_collected_pos = []
+
+    jump_timer = 6
+    if power_ups[0]: jump_timer = 35
+
     while True:
         clicked = False
 
@@ -280,7 +285,7 @@ def main(difficulty=False):
                     handMove = False
                 if event.key == K_UP:
                     handMove = False
-                    if air_timer < 6:
+                    if air_timer < jump_timer:
                         player_y_momentum = -5
             if event.type == KEYUP:
                 if event.key == K_RIGHT:

@@ -152,7 +152,7 @@ def mode_select():
         pygame.display.update()
         dt = clock.tick(30)
 
-def level_1_info(difficulty):
+def level_1_info(difficulty, power_ups):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -202,20 +202,20 @@ def level_1_info(difficulty):
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            level_1.main(difficulty)
+            level_1.main(power_ups, difficulty=difficulty)
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main(difficulty=difficulty, level=1)
+            world_map.main(difficulty=difficulty, level=1, power_ups=power_ups)
             pygame.quit()
             sys.exit()
 
         pygame.display.update()
         dt = clock.tick(30)
 
-def level_2_info(difficulty, coins):
+def level_2_info(difficulty, coins, power_ups):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -264,20 +264,20 @@ def level_2_info(difficulty, coins):
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            level_2.main(coins, difficulty=difficulty)
+            level_2.main(coins, power_ups, difficulty=difficulty)
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main(difficulty=difficulty, coins=coins, level=2)
+            world_map.main(difficulty=difficulty, coins=coins, level=2, power_ups=power_ups)
             pygame.quit()
             sys.exit()
 
         pygame.display.update()
         dt = clock.tick(30)
 
-def level_3_info(difficulty, coins):
+def level_3_info(difficulty, coins, power_ups):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -326,13 +326,13 @@ def level_3_info(difficulty, coins):
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            level_3.main(coins, difficulty=difficulty)
+            level_3.main(coins, power_ups, difficulty=difficulty)
             pygame.quit()
             sys.exit()
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main(difficulty=difficulty, coins=coins, level=3)
+            world_map.main(difficulty=difficulty, coins=coins, level=3, power_ups=power_ups)
             pygame.quit()
             sys.exit()
 
@@ -428,7 +428,7 @@ def final():
         pygame.display.update()
         dt = clock.tick(60)
 
-def shop(coins, level):
+def shop(coins, level, power_ups):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -437,6 +437,10 @@ def shop(coins, level):
     doublejump_board = False
     extralife_board = False
 
+    prices = {"double jump": "$20", "extra life": "$20", "dash": "$20"}
+    if power_ups[0]: prices["double jump"] = "SOLD"
+    if power_ups[1]: prices["extra life"] = "SOLD"
+    if power_ups[2]: prices["dash"] = "SOLD"
 
     font = pygame.font.Font('data/ARCADE_N.TTF', 20)
 
@@ -478,83 +482,104 @@ def shop(coins, level):
         back_button.draw_button(screen, pygame.mouse.get_pos())
 
         doublejump_button = pygame.image.load('data/images/doublejump.png')  
-        doublejump_button = pygame.transform.scale(doublejump_button, (150, 131.25))
+        doublejump_button = pygame.transform.scale(doublejump_button, (100, 75))
         doublejump_button_rect = doublejump_button.get_rect()
-        doublejump_button_rect.topleft = (150 , 230)
+        doublejump_button_rect.topleft = (200 , 280)
 
         extralife_button = pygame.image.load('data/images/extralife.png')  
-        extralife_button = pygame.transform.scale(extralife_button, (150, 112.5))
-        extralife_button_rect = doublejump_button.get_rect()
-        extralife_button_rect.topleft = (10 , 230)
+        extralife_button = pygame.transform.scale(extralife_button, (100, 75))
+        extralife_button_rect = extralife_button.get_rect()
+        extralife_button_rect.topleft = (60 , 280)
 
         dash_button = pygame.image.load('data/images/dash.png')  
-        dash_button = pygame.transform.scale(dash_button, (150, 112.5))
-        dash_button_rect = doublejump_button.get_rect()
-        dash_button_rect.topleft = (300 , 230)
+        dash_button = pygame.transform.scale(dash_button, (100, 75))
+        dash_button_rect = dash_button.get_rect()
+        dash_button_rect.topleft = (350 , 280)
 
         doublejumpboard = pygame.image.load('data/images/dashboard.png')  
         doublejumpboard_rect = doublejumpboard.get_rect()
         doublejumpboard_rect.topleft = (30 , -20)
 
-        dashboard= pygame.image.load('data/images/dashboard.png')  
-        dashboard_rect = doublejump_button.get_rect()
+        dashboard = pygame.image.load('data/images/dashboard.png')  
+        dashboard_rect = dashboard.get_rect()
         dashboard_rect.topleft = (30 , -20)
 
-        extralifeboard= pygame.image.load('data/images/dashboard.png')  
+        extralifeboard = pygame.image.load('data/images/dashboard.png')  
         extralifeboard_rect = extralifeboard.get_rect()
         extralifeboard_rect.topleft = (30 , -20)
+        
+        buydash_button = Button(font, prices["dash"], Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
 
-        buydash_button = Button(font, "$20", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
+        buydoublejump_button = Button(font, prices["double jump"], Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
 
-        buydoublejump_button = Button(font, "$10", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
-
-        buyextralife_button = Button(font, "$13", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
+        buyextralife_button = Button(font, prices["extra life"], Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main(coins=coins, level=level)
+            world_map.main(coins=coins, level=level, power_ups=power_ups)
             pygame.quit()
             sys.exit()
 
         if doublejump_button_rect.collidepoint(pygame.mouse.get_pos()):
-            doublejump_button = pygame.transform.scale(doublejump_button, (200, 131.25))
+            doublejump_button = pygame.transform.scale(doublejump_button, (110, 83))
+            doublejump_button_rect.topleft = (195 , 276)
             if clicked:
+                play_effect('data/audio/select.wav')
                 dash_board = False
                 doublejump_board = True
                 extralife_board = False
             
 
         if extralife_button_rect.collidepoint(pygame.mouse.get_pos()):
-            extralife_button = pygame.transform.scale(extralife_button, (200, 131.25))
+            extralife_button = pygame.transform.scale(extralife_button, (110, 83))
+            extralife_button_rect.topleft = (55 , 276)
             if clicked:
+                play_effect('data/audio/select.wav')
                 dash_board = False
                 doublejump_board = False
                 extralife_board = True
 
         if dash_button_rect.collidepoint(pygame.mouse.get_pos()):
-            dash_button = pygame.transform.scale(dash_button, (200, 131.25))
+            dash_button = pygame.transform.scale(dash_button, (110, 83))
+            dash_button_rect.topleft = (345 , 276)
             if clicked:
+                play_effect('data/audio/select.wav')
                 dash_board = True
                 doublejump_board = False
                 extralife_board = False
 
         if dash_board:
             screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
-            buydash_button.draw_button(screen, pygame.mouse.get_pos())
             if clicked and buydash_button.checkHover(pygame.mouse.get_pos()):
                 play_effect('data/audio/select.wav')
-        
+                if coins >= 20 and not power_ups[2]:
+                    power_ups[2] = True
+                    prices["dash"] = "SOLD"
+                    coins -= 20
+                    buydash_button = Button(font, "SOLD", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
+            buydash_button.draw_button(screen, pygame.mouse.get_pos())
+
         if extralife_board:
             screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
-            buyextralife_button.draw_button(screen, pygame.mouse.get_pos())
             if clicked and buyextralife_button.checkHover(pygame.mouse.get_pos()):
                 play_effect('data/audio/select.wav')
+                if coins >= 20 and not power_ups[1]:
+                    power_ups[1] = True
+                    prices["extra life"] = "SOLD"
+                    coins -= 20
+                    buyextralife_button = Button(font, "SOLD", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
+            buyextralife_button.draw_button(screen, pygame.mouse.get_pos())
 
         if doublejump_board:
             screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
-            buydoublejump_button.draw_button(screen, pygame.mouse.get_pos())
             if clicked and buydoublejump_button.checkHover(pygame.mouse.get_pos()):
                 play_effect('data/audio/select.wav')
+                if coins >= 20 and not power_ups[0]:
+                    power_ups[0] = True
+                    prices["double jump"] = "SOLD"
+                    coins -= 20
+                    buydoublejump_button = Button(font, "SOLD", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
+            buydoublejump_button.draw_button(screen, pygame.mouse.get_pos())
         
         coin_text = font.render("COINS: " + str(coins), True, Color("black"))
         coin_text_rect = coin_text.get_rect(center=(100, 30))

@@ -49,7 +49,7 @@ def show_popup(screen, message, popup=False):
         pygame.draw.rect(screen, (255, 255, 255), text_rect.inflate(2, 2), border_radius=5)  
         screen.blit(text, text_rect)
 
-def main(coins_col, difficulty=False):
+def main(coins_col, power_ups, difficulty=False):
 
     pygame.init()
     clock = pygame.time.Clock()

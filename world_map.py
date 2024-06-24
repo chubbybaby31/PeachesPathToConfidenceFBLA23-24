@@ -28,7 +28,7 @@ def handle_collisions(p_rect, rects, right, left, up, down):
                 p_rect.bottom = rect.top        
     return p_rect
 
-def main(difficulty=False, coins=0, level=0):
+def main(difficulty=False, coins=0, level=0, power_ups=[False, False, False]):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -144,18 +144,18 @@ def main(difficulty=False, coins=0, level=0):
                 if event.key == K_RETURN:
                     if collision_levels[0]:
                         play_effect('data/audio/enterlevel.wav')
-                        messages.level_1_info(difficulty)
+                        messages.level_1_info(difficulty, power_ups)
                         pygame.quit()
                         sys.exit()
                     elif collision_levels[1]:
                         play_effect('data/audio/enterlevel.wav')
 
-                        messages.level_2_info(difficulty, coins)
+                        messages.level_2_info(difficulty, coins, power_ups)
                         pygame.quit()
                         sys.exit()
                     elif collision_levels[2]:
                         play_effect('data/audio/enterlevel.wav')
-                        messages.level_3_info(difficulty, coins)
+                        messages.level_3_info(difficulty, coins, power_ups)
                         pygame.quit()
                         sys.exit()
         if move_right:
@@ -170,7 +170,7 @@ def main(difficulty=False, coins=0, level=0):
         if shop_button.checkHover(pygame.mouse.get_pos()):
             if clicked and not difficulty:
                 play_effect('data/audio/select.wav')
-                messages.shop(coins, level)
+                messages.shop(coins, level, power_ups)
             elif difficulty:
                 show_popup(screen, "CAN'T USE SHOP IN HARD MODE")
         if menu_button.checkHover(pygame.mouse.get_pos()) and clicked:  
@@ -193,4 +193,4 @@ def play_effect(filename):
 
 if __name__ == '__main__':
     pygame.mixer.init()
-    main()
+    main(coins=40)
