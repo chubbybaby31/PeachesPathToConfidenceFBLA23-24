@@ -124,7 +124,7 @@ def main(coins_col, power_ups, difficulty=False):
 
     near_door = False
 
-    lives = 20
+    lives = 3
     if power_ups[1]: lives += 1
     invincible = False
     invincible_timer = 0
