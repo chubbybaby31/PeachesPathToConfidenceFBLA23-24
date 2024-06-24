@@ -103,4 +103,3 @@ if __name__ == '__main__':
     pygame.mixer.init()
     start_new_thread(play_bg_music, ('data/audio/bg_music.wav',))
     main()
-    
