@@ -551,34 +551,37 @@ def shop(coins, level, power_ups):
         if dash_board:
             screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
             if clicked and buydash_button.checkHover(pygame.mouse.get_pos()):
-                play_effect('data/audio/select.wav')
                 if coins >= 20 and not power_ups[2]:
+                    play_effect('data/audio/buy.wav')
                     power_ups[2] = True
                     prices["dash"] = "SOLD"
                     coins -= 20
                     buydash_button = Button(font, "SOLD", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
+                else: play_effect('data/audio/sold.wav')
             buydash_button.draw_button(screen, pygame.mouse.get_pos())
 
         if extralife_board:
             screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
             if clicked and buyextralife_button.checkHover(pygame.mouse.get_pos()):
-                play_effect('data/audio/select.wav')
                 if coins >= 20 and not power_ups[1]:
+                    play_effect('data/audio/buy.wav')
                     power_ups[1] = True
                     prices["extra life"] = "SOLD"
                     coins -= 20
                     buyextralife_button = Button(font, "SOLD", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
+                else: play_effect('data/audio/sold.wav')
             buyextralife_button.draw_button(screen, pygame.mouse.get_pos())
 
         if doublejump_board:
             screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
             if clicked and buydoublejump_button.checkHover(pygame.mouse.get_pos()):
-                play_effect('data/audio/select.wav')
                 if coins >= 20 and not power_ups[0]:
+                    play_effect('data/audio/buy.wav')
                     power_ups[0] = True
                     prices["double jump"] = "SOLD"
                     coins -= 20
                     buydoublejump_button = Button(font, "SOLD", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
+                else: play_effect('data/audio/sold.wav')
             buydoublejump_button.draw_button(screen, pygame.mouse.get_pos())
         
         coin_text = font.render("COINS: " + str(coins), True, Color("black"))
