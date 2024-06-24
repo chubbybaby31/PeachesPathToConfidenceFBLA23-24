@@ -433,6 +433,10 @@ def shop(coins):
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
 
+    dash_board = False
+    doublejump_board = False
+    extralife_board = False
+
     font = pygame.font.Font('data/ARCADE_N.TTF', 20)
 
     global WINDOW_SIZE
@@ -487,6 +491,27 @@ def shop(coins):
         dash_button_rect = doublejump_button.get_rect()
         dash_button_rect.topleft = (300 , 230)
 
+        doublejumpboard = pygame.image.load('data/images/dashboard.png')  
+        doublejumpboard_rect = doublejumpboard.get_rect()
+        doublejumpboard_rect.topleft = (30 , -20)
+
+        dashboard= pygame.image.load('data/images/dashboard.png')  
+        dashboard_rect = doublejump_button.get_rect()
+        dashboard_rect.topleft = (30 , -20)
+
+        extralifeboard= pygame.image.load('data/images/dashboard.png')  
+        extralifeboard_rect = extralifeboard.get_rect()
+        extralifeboard_rect.topleft = (30 , -20)
+
+        buydash_button = Button(font, "$20", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
+
+        buydoublejump_button = Button(font, "$10", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
+
+        buyextralife_button = Button(font, "$13", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
+
+
+       
+
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
             world_map.main()
@@ -495,12 +520,37 @@ def shop(coins):
 
         if doublejump_button_rect.collidepoint(pygame.mouse.get_pos()):
             doublejump_button = pygame.transform.scale(doublejump_button, (200, 131.25))
+            if clicked:
+                dash_board = False
+                doublejump_board = True
+                extralife_board = False
+            
 
         if extralife_button_rect.collidepoint(pygame.mouse.get_pos()):
             extralife_button = pygame.transform.scale(extralife_button, (200, 131.25))
+            if clicked:
+                dash_board = False
+                doublejump_board = False
+                extralife_board = True
 
         if dash_button_rect.collidepoint(pygame.mouse.get_pos()):
             dash_button = pygame.transform.scale(dash_button, (200, 131.25))
+            if clicked:
+                dash_board = True
+                doublejump_board = False
+                extralife_board = False
+
+        if dash_board:
+            screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
+            buydash_button.draw_button(screen, pygame.mouse.get_pos())
+        
+        if extralife_board:
+            screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
+            buyextralife_button.draw_button(screen, pygame.mouse.get_pos())
+        
+        if doublejump_board:
+            screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
+            buydoublejump_button.draw_button(screen, pygame.mouse.get_pos())
 
         
         coin_text = font.render("COINS: " + str(coins), True, Color("black"))
