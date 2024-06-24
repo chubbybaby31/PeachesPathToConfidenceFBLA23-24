@@ -459,7 +459,6 @@ def shop(coins):
 
                 # Display the frame on the Pygame window
                 screen.blit(frame_surface, (0, 0))
-                
         else:
             # Display the background image
             screen.blit(bg_img, (0, 0))
@@ -473,18 +472,43 @@ def shop(coins):
         back_button = Button(font, "BACK", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 520, 150, 50), Color("white"), Color("gray"))
         back_button.draw_button(screen, pygame.mouse.get_pos())
 
+        doublejump_button = pygame.image.load('data/images/doublejump.png')  
+        doublejump_button = pygame.transform.scale(doublejump_button, (150, 131.25))
+        doublejump_button_rect = doublejump_button.get_rect()
+        doublejump_button_rect.topleft = (150 , 230)
 
-        powerup_button = Button(font, "BACK", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 520, 150, 50), Color("white"), Color("gray"))
+        extralife_button = pygame.image.load('data/images/extralife.png')  
+        extralife_button = pygame.transform.scale(extralife_button, (150, 112.5))
+        extralife_button_rect = doublejump_button.get_rect()
+        extralife_button_rect.topleft = (10 , 230)
+
+        dash_button = pygame.image.load('data/images/dash.png')  
+        dash_button = pygame.transform.scale(dash_button, (150, 112.5))
+        dash_button_rect = doublejump_button.get_rect()
+        dash_button_rect.topleft = (300 , 230)
 
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
             world_map.main()
             pygame.quit()
             sys.exit()
+
+        if doublejump_button_rect.collidepoint(pygame.mouse.get_pos()):
+            doublejump_button = pygame.transform.scale(doublejump_button, (200, 131.25))
+
+        if extralife_button_rect.collidepoint(pygame.mouse.get_pos()):
+            extralife_button = pygame.transform.scale(extralife_button, (200, 131.25))
+
+        if dash_button_rect.collidepoint(pygame.mouse.get_pos()):
+            dash_button = pygame.transform.scale(dash_button, (200, 131.25))
+
         
         coin_text = font.render("COINS: " + str(coins), True, Color("black"))
         coin_text_rect = coin_text.get_rect(center=(100, 30))
         screen.blit(coin_text, coin_text_rect)
+        screen.blit(doublejump_button, doublejump_button_rect.topleft)
+        screen.blit(extralife_button, extralife_button_rect.topleft)
+        screen.blit(dash_button, dash_button_rect.topleft)
 
         pygame.display.update()
         dt = clock.tick(30)
