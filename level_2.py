@@ -117,12 +117,17 @@ def main(coins_col, power_ups, difficulty=False):
     near_door = False
 
     lives = 20
+    if power_ups[1]: lives += 1
     invincible = False
     invincible_timer = 0
     game_over = False
     handMove = False
     coins_collected = coins_col
     coins_collected_pos = []
+
+    jump_timer = 6
+    if power_ups[0]: jump_timer = 35
+
     while True:
         clicked = False
         if player.y >= 600:
@@ -284,7 +289,7 @@ def main(coins_col, power_ups, difficulty=False):
                     handMoved = False
                 if event.key == K_UP:
                     handMoved = False
-                    if air_timer < 6:
+                    if air_timer < jump_timer:
                         player_y_momentum = -5
             if event.type == KEYUP:
                 if event.key == K_RIGHT:
