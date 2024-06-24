@@ -170,7 +170,7 @@ def main(difficulty=False, coins=0, level=0):
         if shop_button.checkHover(pygame.mouse.get_pos()):
             if clicked and not difficulty:
                 play_effect('data/audio/select.wav')
-                messages.shop(coins)
+                messages.shop(coins, level)
             elif difficulty:
                 show_popup(screen, "CAN'T USE SHOP IN HARD MODE")
         if menu_button.checkHover(pygame.mouse.get_pos()) and clicked:  

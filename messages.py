@@ -428,7 +428,7 @@ def final():
         pygame.display.update()
         dt = clock.tick(60)
 
-def shop(coins):
+def shop(coins, level):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -436,6 +436,7 @@ def shop(coins):
     dash_board = False
     doublejump_board = False
     extralife_board = False
+
 
     font = pygame.font.Font('data/ARCADE_N.TTF', 20)
 
@@ -509,12 +510,9 @@ def shop(coins):
 
         buyextralife_button = Button(font, "$13", Color("black"), pygame.Rect(600, 435, 150, 50), Color("light green"), Color("gray"))
 
-
-       
-
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            world_map.main()
+            world_map.main(coins=coins, level=level)
             pygame.quit()
             sys.exit()
 
@@ -543,15 +541,20 @@ def shop(coins):
         if dash_board:
             screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
             buydash_button.draw_button(screen, pygame.mouse.get_pos())
+            if clicked and buydash_button.checkHover(pygame.mouse.get_pos()):
+                play_effect('data/audio/select.wav')
         
         if extralife_board:
             screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
             buyextralife_button.draw_button(screen, pygame.mouse.get_pos())
-        
+            if clicked and buyextralife_button.checkHover(pygame.mouse.get_pos()):
+                play_effect('data/audio/select.wav')
+
         if doublejump_board:
             screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
             buydoublejump_button.draw_button(screen, pygame.mouse.get_pos())
-
+            if clicked and buydoublejump_button.checkHover(pygame.mouse.get_pos()):
+                play_effect('data/audio/select.wav')
         
         coin_text = font.render("COINS: " + str(coins), True, Color("black"))
         coin_text_rect = coin_text.get_rect(center=(100, 30))
