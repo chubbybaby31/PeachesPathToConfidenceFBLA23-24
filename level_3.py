@@ -140,6 +140,8 @@ def main(coins_col, power_ups, difficulty=False):
     jump_timer = 6
     if power_ups[0]: jump_timer = 35
 
+    dash = 1
+
     while True:
         clicked = False
         if player.y >= 600:
@@ -205,14 +207,15 @@ def main(coins_col, power_ups, difficulty=False):
                     chest_ids.append(int(tile))
                 if tile == '1' or tile == '2' or tile == '9' or tile == 'd' or tile == 'g':
                     tile_rects.append(pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE))
-        #print('\n')
+       
         player_movement = [0, 0]
         if moving_right:
-            player_movement[0] += 2
+            player_movement[0] += 2 * dash
         if moving_left:
-            player_movement[0] -= 2
+            player_movement[0] -= 2 * dash
         player_movement[1] += player_y_momentum
         player_y_momentum += 0.2
+        if dash != 1: dash = 1
         if player_y_momentum > 3: player_y_momentum = 3
 
         if player_movement[0] > 0:
@@ -331,6 +334,9 @@ def main(coins_col, power_ups, difficulty=False):
                 if event.key == K_RETURN and unlocked:
                     play_effect('data/audio/level_complete.wav', 4)
                     food_aquired = True
+                if event.key == K_SPACE and power_ups[2]:
+                    print("dash")
+                    dash = 30
             if event.type == MOUSEBUTTONUP:
                 clicked = True
 
@@ -381,8 +387,7 @@ def main(coins_col, power_ups, difficulty=False):
                 if clicked and restart_button.checkHover(pygame.mouse.get_pos()):
                     musicCounter = 0
                     play_effect('data/audio/select.wav', 5)
-                    main(coins_col, difficulty=difficulty)
-                    main(coins_col, difficulty=difficulty)
+                    main(coins_col, power_ups, difficulty=difficulty)
                     pygame.quit()
                     sys.exit()
 
@@ -391,7 +396,7 @@ def main(coins_col, power_ups, difficulty=False):
 
                 if clicked and menu_button.checkHover(pygame.mouse.get_pos()):
                     play_effect('data/audio/select.wav', 5)
-                    world_map.main(difficulty=difficulty, coins=coins_col, level=3)
+                    world_map.main(difficulty=difficulty, coins=coins_col, level=3, power_ups=power_ups)
                     pygame.quit()
                     sys.exit()
 
