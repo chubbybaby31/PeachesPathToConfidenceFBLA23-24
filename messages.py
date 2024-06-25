@@ -352,8 +352,6 @@ def instructions1():
 
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
 
-    message = '''Take on the role as Peaches, an unconfident pig who has embarked on a journey to find her missing food. In each level, you will need to navigate through the map, with the arrow keys, and unlock chests that hold the secrete to confidence. Once all chests are unlocked in a level, you can exit the map by exiting through a door. But be careful. There are several wolves placed around the map to prevent you from succeeding. Goodluck on your journy!'''
-    
     while True:
         clicked = False
         screen.blit(bg_img, (0, 0))
@@ -372,9 +370,6 @@ def instructions1():
             play_effect('data/audio/select.wav')
             instructions2()
             
-        
-        
-
         pygame.display.update()
         dt = clock.tick(60)
 
@@ -391,7 +386,6 @@ def instructions2():
     WINDOW_SIZE = (800, 600)
 
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
-
     
     while True:
         clicked = False
@@ -411,8 +405,6 @@ def instructions2():
             play_effect('data/audio/select.wav')
             menu.main()
             
-        
-
         pygame.display.update()
         dt = clock.tick(60)
 
