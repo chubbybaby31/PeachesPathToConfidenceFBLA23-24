@@ -339,12 +339,13 @@ def level_3_info(difficulty, coins, power_ups):
         pygame.display.update()
         dt = clock.tick(30)
 
-def instructions():
+def instructions1():
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
 
     font = pygame.font.Font('data/ARCADE_N.TTF', 20)
+    bg_img = pygame.image.load("data/images/instructions1.png")
 
     global WINDOW_SIZE
     WINDOW_SIZE = (800, 600)
@@ -355,28 +356,62 @@ def instructions():
     
     while True:
         clicked = False
-        screen.fill(Color("sky blue"))
-        lines = wrap_text(message, font, WINDOW_SIZE[0] - 20)
-        for i, line in enumerate(lines):
-            text = font.render(line, True, Color("black"))
-            text_rect = text.get_rect(center=(WINDOW_SIZE[0] // 2, 20 + i * 40))
-            screen.blit(text, text_rect)
+        screen.blit(bg_img, (0, 0))
+        
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
             if event.type == MOUSEBUTTONUP:
+                clicked = True
 
+        controls_button = Button(font, "CONTROLS", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 87.5, 520, 175, 50), Color("white"), Color("gray"))
+        controls_button.draw_button(screen, pygame.mouse.get_pos())
+
+        if clicked and controls_button.checkHover(pygame.mouse.get_pos()):
+            play_effect('data/audio/select.wav')
+            instructions2()
+            
+        
+        
+
+        pygame.display.update()
+        dt = clock.tick(60)
+
+def instructions2():
+    pygame.init()
+    clock = pygame.time.Clock()
+    pygame.display.set_caption('FBLA 2023-24')
+
+    font = pygame.font.Font('data/ARCADE_N.TTF', 20)
+    bg_img = pygame.image.load("data/images/instructions2.png")
+    
+
+    global WINDOW_SIZE
+    WINDOW_SIZE = (800, 600)
+
+    screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
+
+    
+    while True:
+        clicked = False
+        screen.blit(bg_img, (0, 0))
+        
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == MOUSEBUTTONUP:
                 clicked = True
 
         back_button = Button(font, "BACK", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 520, 150, 50), Color("white"), Color("gray"))
         back_button.draw_button(screen, pygame.mouse.get_pos())
-
+            
         if clicked and back_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
             menu.main()
-            pygame.quit()
-            sys.exit()
+            
+        
 
         pygame.display.update()
         dt = clock.tick(60)
@@ -496,7 +531,7 @@ def shop(coins, level, power_ups):
         dash_button_rect = dash_button.get_rect()
         dash_button_rect.topleft = (350 , 280)
 
-        doublejumpboard = pygame.image.load('data/images/dashboard.png')  
+        doublejumpboard = pygame.image.load('data/images/doublejumpboard.png')  
         doublejumpboard_rect = doublejumpboard.get_rect()
         doublejumpboard_rect.topleft = (30 , -20)
 
@@ -504,7 +539,7 @@ def shop(coins, level, power_ups):
         dashboard_rect = dashboard.get_rect()
         dashboard_rect.topleft = (30 , -20)
 
-        extralifeboard = pygame.image.load('data/images/dashboard.png')  
+        extralifeboard = pygame.image.load('data/images/extralifeboard.png')  
         extralifeboard_rect = extralifeboard.get_rect()
         extralifeboard_rect.topleft = (30 , -20)
         
@@ -549,7 +584,7 @@ def shop(coins, level, power_ups):
                 extralife_board = False
 
         if dash_board:
-            screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
+            screen.blit(dashboard, dashboard_rect.topleft)
             if clicked and buydash_button.checkHover(pygame.mouse.get_pos()):
                 if coins >= 20 and not power_ups[2]:
                     play_effect('data/audio/buy.wav')
@@ -561,7 +596,7 @@ def shop(coins, level, power_ups):
             buydash_button.draw_button(screen, pygame.mouse.get_pos())
 
         if extralife_board:
-            screen.blit(doublejumpboard, doublejumpboard_rect.topleft)
+            screen.blit(extralifeboard, extralifeboard_rect.topleft)
             if clicked and buyextralife_button.checkHover(pygame.mouse.get_pos()):
                 if coins >= 20 and not power_ups[1]:
                     play_effect('data/audio/buy.wav')
@@ -599,4 +634,4 @@ def play_effect(filename):
 
 if __name__ == '__main__':
     pygame.mixer.init()
-    instructions()
+    instructions1()

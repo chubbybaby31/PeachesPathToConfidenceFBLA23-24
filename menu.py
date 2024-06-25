@@ -79,7 +79,7 @@ def main():
             sys.exit()
         elif clicked and instruction_button.checkHover(pygame.mouse.get_pos()):
             play_effect('data/audio/select.wav')
-            messages.instructions()
+            messages.instructions1()
             pygame.quit()
             sys.exit()
         elif clicked and quit_button.checkHover(pygame.mouse.get_pos()):

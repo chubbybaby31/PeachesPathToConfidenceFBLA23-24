@@ -308,6 +308,8 @@ def main(power_ups, difficulty=False):
                     game_over = True
                 if event.key == K_SPACE and power_ups[2]:
                     dash = 30
+                    play_effect('data/audio/dash.wav', 4)
+
             if event.type == MOUSEBUTTONUP:
                 clicked = True
 
