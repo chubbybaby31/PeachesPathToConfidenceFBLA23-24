@@ -267,13 +267,25 @@ def main(power_ups, difficulty=False):
         if door_distance <= 30 and not near_door and not unlocked:
             show_popup(display, " Unlock all" + str(max_c_pts) + " chests to open door", popup=True)
         elif door_distance <= 30: 
-            show_popup(display, " Press ENTER to complete level", popup=True)
+            if not difficulty:
+                show_popup(display, " Press ENTER to complete level", popup=True)
+            else:
+                show_popup(display, " Swipe up to complete level", popup=True)
+
 
         if chest_popup_id != None and not confidence_collected[chest_popup_id]:
-            show_popup(display, " Press E to open chest", popup=True)
+            if not difficulty:
+                show_popup(display, " Press E to open chest", popup=True)
+            else:
+                show_popup(display, " Swipe up to open chest", popup=True)
+
         elif current_chest_id != None:
-            show_popup(display, confidence_quips[current_chest_id])
-            show_popup(display, " Press ESC to exit", popup=True)
+            if not difficulty:
+                show_popup(display, confidence_quips[current_chest_id])
+                show_popup(display, " Press ESC to exit", popup=True)
+            else:
+                show_popup(display, confidence_quips[current_chest_id])
+                show_popup(display, " Swipe down to exit", popup=True)               
         
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -290,7 +302,7 @@ def main(power_ups, difficulty=False):
                     handMove = False
                     if air_timer < jump_timer:
                         player_y_momentum = -5
-            if event.type == KEYUP:
+            if event.type == KEYUP and not difficulty:
                 if event.key == K_RIGHT:
                     moving_right = False
                 if event.key == K_LEFT:
@@ -377,6 +389,8 @@ def main(power_ups, difficulty=False):
             try:
                 screen.blit(pygame.transform.rotate(hand.frame, -90), (0, 500))
                 hand_movement = hand.movement
+                open = hand.open
+                exit = hand.exit
                 if hand_movement[0] == 1:
                     moving_right = True
                     moving_left = False
@@ -392,6 +406,22 @@ def main(power_ups, difficulty=False):
                 if hand_movement[1] == 1:
                     if air_timer < 6:
                             player_y_momentum = -5
+                if exit:
+                    current_chest_id = None
+                    exit = False
+                if open:
+                    if chest_popup_id != None:
+                        play_effect('data/audio/chest.wav', 3)
+                        confidence_collected[chest_popup_id] = True
+                        current_chest_id = chest_popup_id
+                        c_pts += 1
+                        open = False
+                    if unlocked:
+                        play_effect('data/audio/level_complete.wav', 4)
+                        print("level complete")
+                        game_over = True
+                        open = False
+                    
                 
             except TypeError: pass
         pygame.display.update()

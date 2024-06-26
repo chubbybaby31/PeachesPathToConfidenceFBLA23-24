@@ -17,10 +17,19 @@ class Mouse():
         self.mpDraw = mp.solutions.drawing_utils
         start_new_thread(self.get_frame, ())
         self.movement = [0,0]
-
+        self.open = False
+        self.exit = False
+        self.SWIPE_THRESHOLD = 35
+        self.swipedown_threshold = -35
+        self.history_len = 10
+        self.y_history = []
+        self.counter1 = 0
+        self.counter2 = 0
+      
     
     def get_frame(self):
         while True:
+            
             ret, frame = self.cap.read()
             # Flip the frame horizontally for a later selfie-view display
             frame = cv2.resize(frame, self.frame_size)
@@ -28,7 +37,7 @@ class Mouse():
             # Convert the BGR image to RGB
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             # Process the frame and find hands
-            results = self.hands.process(frame)    
+            results = self.hands.process(frame)   
             try:
                 frame = cv2.rectangle(frame, (0, 0), (50, 100), (255, 0, 0), 1)
                 frame = cv2.rectangle(frame, (50, 0), (100, 100), (0, 255, 0), 1)
@@ -44,9 +53,30 @@ class Mouse():
                         if id == 8 or id == 4:
                             self.finger_pos[id] = (cx * 2560 / 640, cy * 1440 / 480)
                             cv2.circle(frame, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
+                    
+            
+                    y_coord = handLms.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP].y * frame.shape[0]
+                    self.y_history.append(y_coord)
+                    
+                    # Keep only the last `history_len` y-coordinates
+                    if len(self.y_history) > self.history_len:
+                        self.y_history.pop(0)
+                    
+                    # Check for swipe up gesture
+                    if len(self.y_history) == self.history_len:
+                        y_diff = self.y_history[0] - self.y_history[-1]
+                        print(y_diff)
+                        if y_diff > self.SWIPE_THRESHOLD and self.counter2 == 0:
+                            self.open = True
+                            self.counter1 == 0
+                        elif y_diff < self.swipedown_threshold and self.counter1 == 0:
+                            self.exit = True
+                            self.counter2 == 0
             else: 
                 self.finger_pos[8] = (201, 200)
                 self.finger_pos[4] = (201, 200)
+
+
             frame = pygame.surfarray.make_surface(frame)
             self.frame = frame
             xPos = (int(self.finger_pos[8][0]) + int(self.finger_pos[4][0]))/2
@@ -56,6 +86,9 @@ class Mouse():
                 self.movement[0] = -1
             else:
                 self.movement[0] = 0
+            
+            
+
             
             distance = math.sqrt(((self.finger_pos[8][0]-self.finger_pos[4][0])**2)+((self.finger_pos[8][1]-self.finger_pos[4][1])**2))
             if int(distance) > 50: self.movement[1] = 1
