@@ -77,7 +77,7 @@ def main(power_ups, difficulty=False):
     GUI_font = pygame.font.Font('data/ARCADE_N.TTF', 10)
     EG_font = pygame.font.Font('data/ARCADE_N.TTF', 25)
 
-    confidence_quips = {3: "Set Small Goals: Start with achievable goals to build up your sense of accomplishment. Completing small tasks successfully can boost your confidence gradually.", 
+    confidence_quips = {3: "Set Small Goals: Start with attainable goals to build up your sense of accomplishment. Completing small tasks successfully can boost your confidence gradually.", 
                         4: "Positive Self-Talk: Replace negative thoughts with positive affirmations. Remind yourself of your strengths and achievements, no matter how small they may seem.", 
                         5: "Learn New Skills: Acquiring new skills or hobbies can enhance your self-esteem. It shows you are capable of growth and adaptability."}
 
