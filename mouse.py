@@ -58,11 +58,9 @@ class Mouse():
                     y_coord = handLms.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP].y * frame.shape[0]
                     self.y_history.append(y_coord)
                     
-                    # Keep only the last `history_len` y-coordinates
                     if len(self.y_history) > self.history_len:
                         self.y_history.pop(0)
                     
-                    # Check for swipe up gesture
                     if len(self.y_history) == self.history_len:
                         y_diff = self.y_history[0] - self.y_history[-1]
                         print(y_diff)
