@@ -19,8 +19,8 @@ class Mouse():
         self.movement = [0,0]
         self.open = False
         self.exit = False
-        self.SWIPE_THRESHOLD = 35
-        self.swipedown_threshold = -35
+        self.SWIPE_THRESHOLD = 75
+        self.swipedown_threshold = -75
         self.history_len = 10
         self.y_history = []
         self.counter1 = 0
@@ -55,7 +55,7 @@ class Mouse():
                             cv2.circle(frame, (cx, cy), 5, (255, 0, 255), cv2.FILLED)
                     
             
-                    y_coord = handLms.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP].y * frame.shape[0]
+                    y_coord =  (self.finger_pos[8][1] + self.finger_pos[4][1]) / 2 #handLms.landmark[mp.solutions.hands.HandLandmark.INDEX_FINGER_TIP].y * frame.shape[0]
                     self.y_history.append(y_coord)
                     
                     # Keep only the last `history_len` y-coordinates
@@ -65,13 +65,20 @@ class Mouse():
                     # Check for swipe up gesture
                     if len(self.y_history) == self.history_len:
                         y_diff = self.y_history[0] - self.y_history[-1]
-                        print(y_diff)
+                        #print(y_diff)
                         if y_diff > self.SWIPE_THRESHOLD and self.counter2 == 0:
+                            #print("OPEN")
                             self.open = True
+                            self.exit = False
                             self.counter1 == 0
                         elif y_diff < self.swipedown_threshold and self.counter1 == 0:
+                            #print("CLOSE")
                             self.exit = True
+                            self.open = False
                             self.counter2 == 0
+                        else:
+                            self.open = False
+                            self.exit = False
             else: 
                 self.finger_pos[8] = (201, 200)
                 self.finger_pos[4] = (201, 200)
