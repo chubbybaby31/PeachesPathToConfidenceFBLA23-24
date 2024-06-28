@@ -420,15 +420,11 @@ def final():
     screen = pygame.display.set_mode(WINDOW_SIZE, 0, 32)
 
     message = '''Triumphant, Peaches returns to Harmony Farm with the food, earning the respect and admiration of all the animals. She realizes that her courage was always present, just waiting to be discovered'''
-    
+    bg_img = pygame.image.load("data/images/endscreen.png")
+
     while True:
         clicked = False
-        screen.fill(Color("sky blue"))
-        lines = wrap_text(message, font, WINDOW_SIZE[0] - 20)
-        for i, line in enumerate(lines):
-            text = font.render(line, True, Color("black"))
-            text_rect = text.get_rect(center=(WINDOW_SIZE[0] // 2, 20 + i * 40))
-            screen.blit(text, text_rect)
+        screen.blit(bg_img, (0, 0))
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
@@ -436,10 +432,10 @@ def final():
             if event.type == MOUSEBUTTONUP:
                 clicked = True
             
-        next_button = Button(font, "QUIT", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 450, 150, 50), Color("white"), Color("gray"))
+        next_button = Button(font, "QUIT", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 75, 150, 50), Color("white"), Color("gray"))
         next_button.draw_button(screen, pygame.mouse.get_pos())
 
-        back_button = Button(font, "MENU", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 520, 150, 50), Color("white"), Color("gray"))
+        back_button = Button(font, "MENU", Color("black"), pygame.Rect(WINDOW_SIZE[0] // 2 - 75, 150, 150, 50), Color("white"), Color("gray"))
         back_button.draw_button(screen, pygame.mouse.get_pos())
 
         if clicked and next_button.checkHover(pygame.mouse.get_pos()):
@@ -626,4 +622,4 @@ def play_effect(filename):
 
 if __name__ == '__main__':
     pygame.mixer.init()
-    instructions1()
+    final()
