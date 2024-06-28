@@ -380,7 +380,7 @@ def main(power_ups, difficulty=False):
 
                 if clicked and menu_button.checkHover(pygame.mouse.get_pos()):
                     play_effect('data/audio/select.wav', 5)
-                    world_map.main(difficulty=difficulty, coins=0, level=1, power_ups=power_ups)
+                    world_map.main(difficulty=difficulty, coins=coins_collected, level=1, power_ups=power_ups)
                     pygame.quit()
                     sys.exit()
 
