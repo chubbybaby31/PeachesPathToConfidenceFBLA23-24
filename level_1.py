@@ -116,7 +116,7 @@ def main(power_ups, difficulty=False):
     invincible_timer = 0
     game_over = False
     handMove = False
-    coins_collected = 0
+    coins_collected = 60
     coins_collected_pos = []
 
     jump_timer = 6

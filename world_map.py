@@ -28,7 +28,7 @@ def handle_collisions(p_rect, rects, right, left, up, down):
                 p_rect.bottom = rect.top        
     return p_rect
 
-def main(difficulty=False, coins=0, level=0, power_ups=[False, False, False]):
+def main(difficulty=False, coins=60, level=0, power_ups=[False, False, False]):
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -193,4 +193,4 @@ def play_effect(filename):
 
 if __name__ == '__main__':
     pygame.mixer.init()
-    main(coins=40)
+    main()
