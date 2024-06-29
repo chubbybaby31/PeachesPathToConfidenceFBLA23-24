@@ -428,4 +428,4 @@ def play_effect(filename, channel):
     pygame.mixer.Channel(channel).play(pygame.mixer.Sound(filename))
 
 if __name__ == "__main__":
-    main(0)
+    main(0, [False, False, False])
