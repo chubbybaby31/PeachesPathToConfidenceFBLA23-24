@@ -63,7 +63,6 @@ class Mouse():
                     
                     if len(self.y_history) == self.history_len:
                         y_diff = self.y_history[0] - self.y_history[-1]
-                        print(y_diff)
                         if y_diff > self.SWIPE_THRESHOLD and self.counter2 == 0:
                             self.open = True
                             self.exit = False
