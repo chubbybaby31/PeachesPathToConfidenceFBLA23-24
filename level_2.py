@@ -50,6 +50,7 @@ def show_popup(screen, message, popup=False):
 
 
 def main(coins_col, power_ups, difficulty=False):
+    global musicCounter
     pygame.init()
     clock = pygame.time.Clock()
     pygame.display.set_caption('FBLA 2023-24')
@@ -342,13 +343,12 @@ def main(coins_col, power_ups, difficulty=False):
 
                 if clicked and map_button.checkHover(pygame.mouse.get_pos()):
                     play_effect('data/audio/select.wav', 5)
+                    musicCounter = 0
                     world_map.main(difficulty=difficulty, coins=coins_collected, level=2, power_ups=power_ups)
-
                     pygame.quit()
                     sys.exit()
 
             else:
-                global musicCounter
                 if musicCounter == 0:
                     play_effect('data/audio/lose.wav', 6)
                     musicCounter += 1
